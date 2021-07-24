@@ -9,7 +9,9 @@ public class Library {
     final private List<Album> aAlbums = new ArrayList<>();
     private String aName = "Music Library";
     private static final Library INSTANCE = new Library(); //Singleton design
-
+    private enum AUDIO_FORMAT{
+        MP4 , MP3 , WAV , FLAC , M4A, AAC, WMA
+    };
     /**
      * Private constructor to enable single creation of a library instance.
      */
@@ -71,5 +73,10 @@ public class Library {
         }
     }
 
+    public void addArtist(Artist pArtist){
 
+    }
+    public void removeArtist(Artist pArtist){
+
+    }
 }

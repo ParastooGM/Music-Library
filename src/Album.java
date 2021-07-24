@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Album {
+public class Album implements Listenable{
     final private Artist aArtist;
     final private String aTitle;
     final private int aYear;
@@ -17,5 +17,15 @@ public class Album {
         this.aYear = aYear;
         this.aLanguage = aLanguage;
         this.aStudio = aStudio;
+    }
+
+    @Override
+    public void play() {
+
+    }
+
+    @Override
+    public void restart() {
+
     }
 }

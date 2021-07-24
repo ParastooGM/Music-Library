@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Song {
+public class Song implements Listenable{
 
     final private File aPath;
     final private Artist aArtist;
@@ -15,7 +15,7 @@ public class Song {
     final private Optional <List<Artist>> aCollabs = Optional.empty();
 
     public Song(File path, Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio) {
-        assert path.exists();
+        assert path.exists() && aArtist!= null;
 
         this.aPath = path;
         this.aArtist = aArtist;
@@ -45,6 +45,40 @@ public class Song {
         }else{
             throw new IllegalStateException("This song has not collaborating artists.");
         }
+    }
+
+    public Artist getArtist() {
+        return aArtist;
+    }
+
+    public String getTitle() {
+        return aTitle;
+    }
+
+    public int getYear() {
+        return aYear;
+    }
+
+    public String getLanguage() {
+        return aLanguage;
+    }
+
+    public String getStudio() {
+        return aStudio;
+    }
+
+    public File getPath() {
+        return aPath;
+    }
+
+    @Override
+    public void play() {
+
+    }
+
+    @Override
+    public void restart() {
+
     }
 
     @Override

@@ -30,6 +30,10 @@ public class Artist {
             throw new IllegalStateException("No Profile Picture has been set for this artist yet.");
         }
     };
+
+    public void changeProfilePicture(Image pImage){
+
+    }
     /**
      * @return a list iterator on all the available albums of the artist in the music library.
      */
@@ -42,6 +46,25 @@ public class Artist {
      */
     public Iterator<Song> getSongs() {
         return Collections.unmodifiableList(aSongs).listIterator();
+    }
+
+    public void addAlbum(Album pAlbum){
+
+    }
+
+    public void removeAlbum(Album pAlbum){
+
+    }
+    public void addSong(Song pSong){
+
+    }
+
+    public void removeSong(Song pSong){
+
+    }
+
+    public String getName(){
+        return aName;
     }
 
     @Override

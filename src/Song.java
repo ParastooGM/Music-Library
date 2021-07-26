@@ -1,5 +1,6 @@
 import java.io.File;
-import java.util.ArrayList;
+import java.sql.Time;
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,11 +13,13 @@ public class Song implements Listenable{
     final private int aYear;
     final private String aLanguage;
     final private String aStudio;
+    final private long alength;
     final private Optional <List<Artist>> aCollabs = Optional.empty();
 
-    public Song(File path, Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio) {
+    public Song(File path, Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio, long alength) {
         assert path.exists() && aArtist!= null;
 
+        this.alength = alength;
         this.aPath = path;
         this.aArtist = aArtist;
         this.aTitle = aTitle;
@@ -61,6 +64,10 @@ public class Song implements Listenable{
 
     public String getLanguage() {
         return aLanguage;
+    }
+
+    public long getLength(){
+        return alength;
     }
 
     public String getStudio() {

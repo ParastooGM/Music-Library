@@ -1,25 +1,21 @@
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
+public class PlayList extends SongList{
 
-public class PlayList implements Listenable{
-
-    final private String aName;
-    final private List<Song> aSongs = new ArrayList<>();
-    private Time aLength;
-
-    public PlayList(String name) {
-        this.aName = name;
+    public PlayList(String aTitle) {
+        super(aTitle);
     }
 
-
-    @Override
-    public void play() {
-
+    public void rename(String aName){
+        assert aName !=null;
+        aTitle = aName;
     }
 
-    @Override
-    public void restart() {
+    public void removeSong(Song pSong){
+        assert pSong != null;
+        if (aSongs.contains(pSong)) {
+            aSongs.remove(pSong);
+            numSongs--;
+        }
+    };
 
-    }
+
 }

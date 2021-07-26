@@ -1,31 +1,41 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.*;
 
-public class Album implements Listenable{
+public class Album extends SongList {
+
     final private Artist aArtist;
-    final private String aTitle;
     final private int aYear;
     final private String aLanguage;
     final private String aStudio;
-    final private List<Song> aSongs = new ArrayList<>();
-    private int aNextToListen;
+    final private Image aCover;
 
 
-    public Album(Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio) {
+    public Album(Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio, Image cover) {
+        super(aTitle);
         this.aArtist = aArtist;
-        this.aTitle = aTitle;
         this.aYear = aYear;
         this.aLanguage = aLanguage;
         this.aStudio = aStudio;
+        this.aCover = cover;
     }
 
-    @Override
-    public void play() {
-
+    public Artist getaArtist() {
+        return aArtist;
     }
 
-    @Override
-    public void restart() {
-
+    public int getaYear() {
+        return aYear;
     }
+
+    public String getaLanguage() {
+        return aLanguage;
+    }
+
+    public String getaStudio() {
+        return aStudio;
+    }
+
+    public Image getaCover() {
+        return aCover;
+    }
+
 }

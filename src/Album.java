@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Objects;
 
 public class Album extends SongList {
 
@@ -18,24 +19,62 @@ public class Album extends SongList {
         this.aCover = cover;
     }
 
-    public Artist getaArtist() {
+    /**
+     * @return the artist of the album.
+     */
+    public Artist getArtist() {
         return aArtist;
     }
 
-    public int getaYear() {
+    /**
+     * @return the year the album was released.
+     */
+    public int getYear() {
         return aYear;
     }
 
-    public String getaLanguage() {
+    /**
+     * @return the main language of the album.
+     */
+    public String getLanguage() {
         return aLanguage;
     }
 
-    public String getaStudio() {
+    /**
+     * @return the studio that produced the album.
+     */
+    public String getStudio() {
         return aStudio;
     }
 
-    public Image getaCover() {
+    /**
+     * @return the cover image of the album.
+     */
+    public Image getCover() {
         return aCover;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Album album = (Album) o;
+        return aYear == album.aYear && aArtist.equals(album.aArtist) && aLanguage.equals(album.aLanguage) && aStudio.equals(album.aStudio) && aCover.equals(album.aCover);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), aArtist, aYear, aLanguage, aStudio, aCover);
+    }
+
+    @Override
+    public String toString() {
+        return "Album{" +
+                "Artist=" + aArtist +
+                ", Year=" + aYear +
+                ", Cover Image=" + aCover +
+                ", Title='" + aTitle + '\'' +
+                '}';
+    }
 }

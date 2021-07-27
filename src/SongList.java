@@ -1,17 +1,12 @@
-import java.sql.Time;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public abstract class SongList implements Listenable {
 
     protected String aTitle;
     final protected List<Song> aSongs = new ArrayList<>();
     protected int numSongs = 0;
-    private int aNextToListen;
-    private long aLength;
+    private int currentSongNum =0;
+    protected long aLength;
 
     /**
      * protected constructor to be used in classes that extend SongList.
@@ -25,7 +20,7 @@ public abstract class SongList implements Listenable {
 
     /**
      * Adds a Song to the SongList without duplicates. This is also
-     * where the numSongs variable gets updated.
+     * where the numSongs variable and aLength Variable get updated.
      * @param pSong the Song to be added
      * @pre pSong != null
      */
@@ -59,11 +54,6 @@ public abstract class SongList implements Listenable {
         return numSongs;
     }
 
-
-    public int getNextToListen() {
-        return aNextToListen;
-    }
-
     /**
      * @return the total duration of the SongList.
      */
@@ -71,28 +61,81 @@ public abstract class SongList implements Listenable {
         return aLength;
     }
 
+    /**
+     * Plays the songs on the songList in a random order.
+     */
     public void shufflePlay(){
+        List<Song> temp = new ArrayList<>(aSongs);
+        while (temp.size() != 0){
+            int rand =  new Random().nextInt(temp.size());
+            temp.get(rand).play();
+            currentSongNum = aSongs.indexOf(temp.get(rand));
+            temp.remove(rand);
+        }
 
-    };
+    }
 
-    public void NextSong(){
+    /**
+     * @return the current song in the songList.
+     */
+    public Song currentSong(){
+        return aSongs.get(currentSongNum);
+    }
 
-    };
+    /**
+     * @return the next song in the songList.
+     * Will restart from the beginning of the list.
+     */
+    public Song NextSong(){
+        if (currentSongNum == aSongs.size() -1){
+            currentSongNum = -1;
+        }
+        currentSongNum++;
+        return aSongs.get(currentSongNum);
+    }
 
 
-    public void PreviousSong(){
+    /**
+     * @return the previous song on the SongList
+     * @throws IllegalStateException when the current song is the first song in the list.
+     */
+    public Song PreviousSong() throws IllegalStateException{
+        if (currentSongNum == 0 ){
+            throw new IllegalStateException("This is the first song in the list.");
+        }
+        currentSongNum--;
+        return aSongs.get(currentSongNum);
+    }
 
-    };
-
+    /**
+     * Method from the Listenable interface.
+     * Plays all the songs in the SongList in order.
+     */
     @Override
     public void play() {
+        for (Song s : aSongs){
+            s.play();
+        }
+    }
 
+    /**
+     * restarts the SongList by setting the current song to the first song in the list.
+     */
+    @Override
+    public void restart() {
+        currentSongNum = 0;
     }
 
     @Override
-    public void restart() {
-
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SongList songList = (SongList) o;
+        return aTitle.equals(songList.aTitle) && aSongs.equals(songList.aSongs);
     }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(aTitle, aSongs);
+    }
 }

@@ -1,6 +1,4 @@
 import java.io.File;
-import java.sql.Time;
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -13,13 +11,13 @@ public class Song implements Listenable{
     final private int aYear;
     final private String aLanguage;
     final private String aStudio;
-    final private long alength;
+    final private long aLength;
     final private Optional <List<Artist>> aCollabs = Optional.empty();
 
-    public Song(File path, Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio, long alength) {
+    public Song(File path, Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio, long aLength) {
         assert path.exists() && aArtist!= null;
 
-        this.alength = alength;
+        this.aLength = aLength;
         this.aPath = path;
         this.aArtist = aArtist;
         this.aTitle = aTitle;
@@ -40,8 +38,12 @@ public class Song implements Listenable{
         if (!aCollabs.get().contains(pArtist)){
             aCollabs.get().add(pArtist);
         }
-    };
+    }
 
+    /**
+     * @return collaborating artists of the song.
+     * @throws IllegalStateException if there are no collaborating artists in the song.
+     */
     public List<Artist> getCollabs() throws IllegalStateException{
         if (aCollabs.isPresent()){
             return aCollabs.get();
@@ -50,42 +52,72 @@ public class Song implements Listenable{
         }
     }
 
+    /**
+     * @return the artist of the song.
+     */
     public Artist getArtist() {
         return aArtist;
     }
 
+    /**
+     * @return the title of the song.
+     */
     public String getTitle() {
         return aTitle;
     }
 
+    /**
+     * @return the year that the song was released.
+     */
     public int getYear() {
         return aYear;
     }
 
+    /**
+     * @return the main language of the song.
+     */
     public String getLanguage() {
         return aLanguage;
     }
 
+    /**
+     * @return the length of the song.
+     */
     public long getLength(){
-        return alength;
+        return aLength;
     }
 
+    /**
+     * @return the producing studio of the song.
+     */
     public String getStudio() {
         return aStudio;
     }
 
+    /**
+     * @return the path of the song in the system.
+     */
     public File getPath() {
         return aPath;
     }
 
+    /**
+     * Method from the Listenable interface.
+     * Plays the audio file of the song.
+     */
     @Override
     public void play() {
-
+        //TODO
+        //PLAY AUDIO FILE
     }
 
+    /**
+     * restarts the song from the beginning.
+     */
     @Override
     public void restart() {
-
+        //TODO
+        //RESTART AUDIO FILE
     }
 
     @Override
@@ -99,5 +131,15 @@ public class Song implements Listenable{
     @Override
     public int hashCode() {
         return Objects.hash(aArtist, aTitle, aYear, aLanguage, aCollabs);
+    }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                " Artist=" + aArtist +
+                ", Title='" + aTitle + '\'' +
+                ", Year=" + aYear +
+                ", Ft=" + aCollabs +
+                '}';
     }
 }

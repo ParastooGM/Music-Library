@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class Album extends SongList {
@@ -52,6 +53,19 @@ public class Album extends SongList {
      */
     public Image getCover() {
         return aCover;
+    }
+
+    /**
+     * adds this Album to a playlist.
+     * @param pPlaylist the playlist to add the album to.
+     * @pre pPlayList != null
+     */
+    public void addToPlayList(PlayList pPlaylist){
+        assert pPlaylist != null;
+        Iterator<Song> iter = getSongs();
+        while (iter.hasNext()){
+            pPlaylist.addSong(iter.next());
+        }
     }
 
     @Override

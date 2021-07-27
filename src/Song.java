@@ -102,6 +102,15 @@ public class Song implements Listenable{
     }
 
     /**
+     * adds this song to a playlist.
+     * @param pPlayList the playlist to add the song to.
+     * @pre pPlayList != null
+     */
+    public void addToPlyList(PlayList pPlayList){
+        assert pPlayList != null;
+        pPlayList.addSong(this);
+    }
+    /**
      * Method from the Listenable interface.
      * Plays the audio file of the song.
      */

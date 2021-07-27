@@ -19,6 +19,15 @@ public class Artist {
         this.aName = pName;
     }
 
+
+    /**
+     * @return the name of the Artist.
+     */
+    public String getName(){
+        return aName;
+    }
+
+
     /**
      * @return the profile image of the artist.
      * @throws IllegalStateException if the artist does not have any profile pictures set yet.
@@ -29,11 +38,18 @@ public class Artist {
         }else{
             throw new IllegalStateException("No Profile Picture has been set for this artist yet.");
         }
-    };
-
-    public void changeProfilePicture(Image pImage){
-
     }
+
+    /**
+     * Changes the profile picture of the artist.
+     * @param pImage the new profile image.
+     * @pre pImage != null;
+     */
+    public void changeProfilePicture(Image pImage){
+        assert pImage != null;
+        aProfilePicture = Optional.of(pImage);
+    }
+
     /**
      * @return a list iterator on all the available albums of the artist in the music library.
      */
@@ -48,24 +64,59 @@ public class Artist {
         return Collections.unmodifiableList(aSongs).listIterator();
     }
 
+    /**
+     * Adds an album to the artist's discography.
+     * @param pAlbum the album to be added.
+     * @pre pAlbum != null;
+     * @throws IllegalArgumentException if pAlbum has a different artist than the current artist.
+     */
     public void addAlbum(Album pAlbum){
+        assert pAlbum != null;
+        if (pAlbum.getArtist() == this){
+            aDiscography.add(pAlbum);
+        }else{
+            throw new IllegalArgumentException(pAlbum + " belongs to " + pAlbum.getArtist() + ", not " + this + "!");
+        }
 
     }
 
+    /**
+     * Removes an album from the artist's discography.
+     * @param pAlbum the album to be removed.
+     * @pre pAlbum != null
+     */
     public void removeAlbum(Album pAlbum){
-
+        assert pAlbum != null;
+        aDiscography.remove(pAlbum);
     }
+
+    /**
+     * Adds a song to the artists songs list.
+     * @param pSong the song to be added.
+     * @pre pSong != null;
+     * @throws IllegalArgumentException if pSong has a different artist than the current artist.
+     */
     public void addSong(Song pSong){
+        assert pSong != null;
+        if (pSong.getArtist() == this || pSong.getCollabs().contains(this)){
+            aSongs.add(pSong);
+        }else{
+            throw new IllegalArgumentException(pSong + " belongs to " + pSong.getArtist() + ", not " + this + "!");
+        }
 
     }
 
+    /**
+     * Removes a song from the artist's song list.
+     * @param pSong the song to be removed.
+     * @pre pSong != null;
+     */
     public void removeSong(Song pSong){
-
+        assert pSong != null;
+        aSongs.remove(pSong);
     }
 
-    public String getName(){
-        return aName;
-    }
+
 
     @Override
     public boolean equals(Object o) {

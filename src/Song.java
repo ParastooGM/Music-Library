@@ -1,9 +1,7 @@
 import java.io.File;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
-public class Song implements Listenable{
+public class Song implements Listenable , Model{
 
     final private File aPath;
     final private Artist aArtist;
@@ -13,6 +11,7 @@ public class Song implements Listenable{
     final private String aStudio;
     final private long aLength;
     final private Optional <List<Artist>> aCollabs = Optional.empty();
+    private final Set<Observer> aObservers = new HashSet<>(); //set data structure to store the observers for this model.
 
     public Song(File path, Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio, long aLength) {
         assert path.exists() && aArtist!= null;
@@ -118,6 +117,16 @@ public class Song implements Listenable{
     public void play() {
         //TODO
         //PLAY AUDIO FILE
+
+        NowPlayingObserver observer = new NowPlayingObserver("Observer 1");
+        aObservers.add(observer);
+
+        // Notifying the observers. In the current state, the Now Playing Observer is notified
+        // to log the current song playing.
+        for (Observer obs : aObservers){
+            obs.noticed( this);
+        }
+
     }
 
     /**
@@ -127,6 +136,30 @@ public class Song implements Listenable{
     public void restart() {
         //TODO
         //RESTART AUDIO FILE
+    }
+
+    /**
+     * Implementing the acceptObserver method from the Model Interface.
+     * @param pObserver
+     *          Observer to be added to the list of observers for this model.
+     * @pre pObserver != null
+     */
+    @Override
+    public void acceptObserver(Observer pObserver) {
+        assert pObserver != null;
+        aObservers.add(pObserver);
+    }
+
+    /**
+     * Implementing the removeObserver method from the Model Interface.
+     * @param pObserver
+     *          Observer to be removed from the list of observers for this model.
+     * @pre pObserver != null
+     */
+    @Override
+    public void removeObserver(Observer pObserver){
+        aObservers.remove(pObserver);
+
     }
 
     @Override

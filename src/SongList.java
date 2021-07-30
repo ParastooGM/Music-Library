@@ -1,6 +1,6 @@
 import java.util.*;
 
-public abstract class SongList implements Listenable {
+public abstract class SongList implements Listenable, ToBeVisited {
 
     protected String aTitle;
     final protected List<Song> aSongs = new ArrayList<>();
@@ -125,6 +125,17 @@ public abstract class SongList implements Listenable {
     public void restart() {
         currentSongNum = 0;
     }
+
+    /**
+     * Implementing the acceptVisitor method from ToBeVisited interface.
+     * @param v a particular visitor on the SongList.
+     * @pre v != null
+     */
+    @Override
+    public void acceptVisitor(Visitor v){
+        assert v != null;
+        v.VisitSongList(this);
+    };
 
     @Override
     public boolean equals(Object o) {

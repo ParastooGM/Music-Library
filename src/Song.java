@@ -1,7 +1,7 @@
 import java.io.File;
 import java.util.*;
 
-public class Song implements Listenable , Model{
+public class Song implements Listenable , Model, ToBeVisited{
 
     final private File aPath;
     final private Artist aArtist;
@@ -161,6 +161,17 @@ public class Song implements Listenable , Model{
         aObservers.remove(pObserver);
 
     }
+
+    /**
+     * Implementing the acceptVisitor method from ToBeVisited interface.
+     * @param v a particular visitor on the Song.
+     * @pre v != null
+     */
+    @Override
+    public void acceptVisitor(Visitor v){
+        assert v != null;
+        v.VisitSong(this);
+    };
 
     @Override
     public boolean equals(Object o) {

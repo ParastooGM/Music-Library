@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,9 +16,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 public class LibraryApplication extends Application {
@@ -254,14 +250,142 @@ public class LibraryApplication extends Application {
         });
 
         //add an artist
-        button2.setOnAction(new EventHandler<ActionEvent>() {
+        button4.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                assert textfield2.getText() != null;
-                MusicLibrary.addArtist(new Artist(textfield2.getText()));
+                assert textfield4.getText() != null;
+                MusicLibrary.addArtist(new Artist(textfield4.getText()));
+                textfield4.setText("Added successfully!");
             }
         });
 
+        //search an album
+        button2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                assert textfield2.getText() != null;
+                Optional<HashSet<Album>> foundAlbum = MusicLibrary.getAlbum(textfield2.getText());
+
+                Stage response = new Stage();
+                VBox vbox = new VBox();
+                vbox.setPadding( new Insets(40) );
+
+                // set title for the stage
+                response.setTitle("Music Library");
+
+                if (foundAlbum.isPresent()){
+
+                    ListView<Album> list = new ListView<Album>();
+                    ObservableList<Album> items =FXCollections.observableArrayList (foundAlbum.get());
+                    list.setItems(items);
+                    list.setPrefWidth(100);
+                    list.setPrefHeight(70);
+
+                    vbox.getChildren().addAll(  list );
+
+
+                }else{
+                    Label error = new Label("No Albums with the name '" + textfield2.getText() +"' exists in the Music Library!" );
+                    HBox hbox = new HBox();
+                    hbox.getChildren().add(error);
+                    hbox.setAlignment(Pos.CENTER);
+                    vbox.getChildren().add(hbox);
+                }
+
+                // create a scene
+                Scene scene = new Scene(vbox);
+
+                // create a background fill
+                BackgroundFill background_fill = new BackgroundFill(Color.web("27496D"),
+                        CornerRadii.EMPTY, Insets.EMPTY);
+
+                // create Background
+                Background background = new Background(background_fill);
+
+                // set background
+                vbox.setBackground(background);
+
+                // set the scene
+                response.setScene(scene);
+
+                response.show();
+
+            }
+        });
+
+        //add an album
+        button5.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                //ToDo
+                //open file system
+            }
+        }
+        );
+
+
+        //search a song
+        button3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                assert textfield3.getText() != null;
+                Optional<HashSet<Song>> foundSong = MusicLibrary.getSong(textfield3.getText());
+
+                Stage response = new Stage();
+                VBox vbox = new VBox();
+                vbox.setPadding( new Insets(40) );
+
+                // set title for the stage
+                response.setTitle("Music Library");
+
+                if (foundSong.isPresent()){
+
+                    ListView<Song> list = new ListView<Song>();
+                    ObservableList<Song> items =FXCollections.observableArrayList (foundSong.get());
+                    list.setItems(items);
+                    list.setPrefWidth(100);
+                    list.setPrefHeight(70);
+
+                    vbox.getChildren().addAll(  list );
+
+
+                }else{
+                    Label error = new Label("No Albums with the name '" + textfield3.getText() +"' exists in the Music Library!" );
+                    HBox hbox = new HBox();
+                    hbox.getChildren().add(error);
+                    hbox.setAlignment(Pos.CENTER);
+                    vbox.getChildren().add(hbox);
+                }
+
+                // create a scene
+                Scene scene = new Scene(vbox);
+
+                // create a background fill
+                BackgroundFill background_fill = new BackgroundFill(Color.web("27496D"),
+                        CornerRadii.EMPTY, Insets.EMPTY);
+
+                // create Background
+                Background background = new Background(background_fill);
+
+                // set background
+                vbox.setBackground(background);
+
+                // set the scene
+                response.setScene(scene);
+
+                response.show();
+            }
+        });
+
+        //add a song
+        button6.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                //ToDo
+                //open file system
+            }
+        });
 
     }
 }

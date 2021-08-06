@@ -133,11 +133,11 @@ public class Artist {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Artist artist = (Artist) o;
-        return aName.equals(artist.aName) && aDiscography.equals(artist.aDiscography);
+        return aName.equals(artist.aName) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(aName, aDiscography);
+        return Objects.hash(aName);
     }
 }

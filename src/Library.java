@@ -2,9 +2,9 @@ import java.util.*;
 
 public class Library {
 
-    final private Set<Song> aSongs = new HashSet<>();
-    final private Set<Artist> aArtists = new HashSet<>();
-    final private Set<Album> aAlbums = new HashSet<>();
+    final private Map<String, HashSet<Song>> aSongs = new HashMap<>();
+    final private Map<String, Artist> aArtists = new HashMap<>();
+    final private Map< String, HashSet<Album>> aAlbums = new HashMap<>();
     private String aName = "Music Library";
     private static final Library INSTANCE = new Library(); //Singleton design
 
@@ -17,8 +17,7 @@ public class Library {
     /**
      * Private constructor to enable single creation of a library instance.
      */
-    private Library() {
-    }
+    private Library() {}
 
     /**
      * @return the single library instance.
@@ -54,7 +53,7 @@ public class Library {
     public Iterator<Album> getAlbums(Artist pArtist) throws IllegalArgumentException {
         assert pArtist != null;
 
-        if (!aArtists.contains(pArtist)) {
+        if (aArtists.get(pArtist.getName()) == null) {
             throw new IllegalArgumentException(pArtist + " does not currently exist in the library.");
         } else {
             return pArtist.getAlbums();
@@ -70,7 +69,7 @@ public class Library {
     public Iterator<Song> getSongs(Artist pArtist) throws IllegalArgumentException {
         assert pArtist != null;
 
-        if (!aArtists.contains(pArtist)) {
+        if (aArtists.get(pArtist.getName()) == null) {
             throw new IllegalArgumentException(pArtist + " does not currently exist in the library.");
         } else {
             return pArtist.getSongs();
@@ -81,20 +80,48 @@ public class Library {
      * Adds an Artist with their songs and albums to the library.
      * @param pArtist the artist to be added.
      * @pre pArtist != null
+     * @throws IllegalArgumentException if an artist with the same name is already in the database.
      */
     public void addArtist(Artist pArtist) {
         assert pArtist != null;
-        aArtists.add(pArtist);
-        Iterator iter = pArtist.getAlbums();
-        while (iter.hasNext()) {
-            Album albm = (Album) iter.next();
-            aAlbums.add(albm);
-            Iterator iter_song = albm.getSongs();
-            while (iter_song.hasNext()) {
-                aSongs.add((Song) iter_song.next());
-            }
-        }
 
+        if (aArtists.get(pArtist.getName()) == null){ //if the artist is not already in the database
+
+            aArtists.put(pArtist.getName() , pArtist);
+            Iterator iter = pArtist.getAlbums();
+
+            while (iter.hasNext()) {
+                Album albm = (Album) iter.next();
+
+                HashSet<Album> albm_list = aAlbums.get(albm.getTitle());
+                if (albm_list != null){
+                    albm_list.add(albm);
+                    aAlbums.put(albm.getTitle(), albm_list);
+                }else{
+                    HashSet<Album> new_list = new HashSet<>();
+                    new_list.add(albm);
+                    aAlbums.put(albm.getTitle(), new_list);
+                }
+
+                Iterator iter_song = albm.getSongs();
+                while (iter_song.hasNext()) {
+
+                    Song s = (Song) iter.next();
+
+                    HashSet<Song> song_list = aSongs.get(s.getTitle());
+                    if (song_list != null){
+                        song_list.add(s);
+                        aSongs.put(s.getTitle(), song_list);
+                    }else{
+                        HashSet<Song> new_list = new HashSet<>();
+                        new_list.add(s);
+                        aSongs.put(s.getTitle(), new_list);
+                    }
+                }
+            }
+        }else{
+            throw new IllegalArgumentException("Cannot add artist because an artist with the same name already exists in the library.");
+        }
 
     }
 
@@ -105,31 +132,59 @@ public class Library {
      */
     public void removeArtist(Artist pArtist) {
         assert pArtist != null;
-        aArtists.remove(pArtist);
-        Iterator iter = pArtist.getAlbums();
-        while (iter.hasNext()) {
-            Album albm = (Album) iter.next();
-            aAlbums.remove(albm);
-            Iterator iter_song = albm.getSongs();
-            while (iter_song.hasNext()) {
-                aSongs.remove((Song) iter_song.next());
+        if (aArtists.get(pArtist.getName()) != null) {
+            aArtists.remove(pArtist.getName());
+            Iterator iter = pArtist.getAlbums();
+            while (iter.hasNext()) {
+                Album albm = (Album) iter.next();
+                aAlbums.remove(albm);
+                Iterator iter_song = albm.getSongs();
+                while (iter_song.hasNext()) {
+                    aSongs.remove((Song) iter_song.next());
+                }
             }
         }
     }
 
-    public Optional<Song> getSong(String title , String Artist){
-        //ToDO
-        return Optional.empty();
+    /**
+     * Retrieves a list of songs with the parameter title from the database; used in searching.
+     * @param title the string / key with which the songs list will be retrieved.
+     * @return The optional of the retrieved songs list or an Optional.empty object.
+     */
+    public Optional<HashSet<Song>> getSong(String title ){
+        if (aSongs.containsKey(title)){
+            return Optional.of(aSongs.get(title));
+        }else{
+            return Optional.empty();
+        }
+
     }
 
-    public Optional<Album> getAlbum(String title , String Artist){
-        //ToDo
-        return Optional.empty();
+
+    /**
+     * Retrieves a list of albums with the parameter title from the database; used in searching.
+     * @param title the string / key with which the albums list will be retrieved.
+     * @return The optional of the retrieved albums list or an Optional.empty object.
+     */
+    public Optional<HashSet<Album>> getAlbum(String title ){
+        if (aAlbums.containsKey(title)){
+            return Optional.of(aAlbums.get(title));
+        }else{
+            return Optional.empty();
+        }
     }
 
+    /**
+     * Retrieves an artist object with their name from the database; used in searching.
+     * @param name the string / key with which the artist object will be retrieved.
+     * @return The optional of the retrieved artist or an Optional.empty object.
+     */
     public Optional<Artist> getArtist(String name){
-        //ToDo
-        return Optional.empty();
+        if (aArtists.containsKey(name)){
+            return Optional.of(aArtists.get(name));
+        }else {
+            return Optional.empty();
+        }
     }
 
 }

@@ -1,12 +1,10 @@
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Library {
 
-    final private List<Song> aSongs = new ArrayList<>();
-    final private List<Artist> aArtists = new ArrayList<>();
-    final private List<Album> aAlbums = new ArrayList<>();
+    final private Set<Song> aSongs = new HashSet<>();
+    final private Set<Artist> aArtists = new HashSet<>();
+    final private Set<Album> aAlbums = new HashSet<>();
     private String aName = "Music Library";
     private static final Library INSTANCE = new Library(); //Singleton design
 
@@ -119,19 +117,19 @@ public class Library {
         }
     }
 
-    public Song getSong(String title , String Artist){
+    public Optional<Song> getSong(String title , String Artist){
         //ToDO
-        return null;
+        return Optional.empty();
     }
 
-    public Album getAlbum(String title , String Artist){
+    public Optional<Album> getAlbum(String title , String Artist){
         //ToDo
-        return null;
+        return Optional.empty();
     }
 
-    public Artist getArtist(String name){
+    public Optional<Artist> getArtist(String name){
         //ToDo
-        return null;
+        return Optional.empty();
     }
 
 }

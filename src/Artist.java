@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -7,7 +9,7 @@ public class Artist {
     final private String aName;
     final private List<Song> aSongs = new ArrayList<>();
     final private List<Album> aDiscography = new ArrayList<>();
-    private Optional<Image> aProfilePicture = Optional.empty();
+    private Optional<javafx.scene.image.Image> aProfilePicture = Optional.empty();
 
     /**
      * constructor of the Artist class.
@@ -32,7 +34,7 @@ public class Artist {
      * @return the profile image of the artist.
      * @throws IllegalStateException if the artist does not have any profile pictures set yet.
      */
-    public Image getProfilePicture() throws IllegalStateException{
+    public javafx.scene.image.Image getProfilePicture() throws IllegalStateException{
         if (aProfilePicture.isPresent()){
             return aProfilePicture.get();
         }else{
@@ -56,6 +58,14 @@ public class Artist {
     public Iterator<Album> getAlbums() {
         return Collections.unmodifiableList(aDiscography).listIterator();
     }
+
+    /**
+     * @return a list of the available albums of the artist in the music library.
+     */
+    public List<Album> getAlbumsList() {
+        return Collections.unmodifiableList(aDiscography);
+    }
+
 
     /**
      * @return a list iterator on all the available songs of the artist in the music library.

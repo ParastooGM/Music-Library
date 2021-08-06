@@ -1,16 +1,26 @@
 import javafx.application.Application;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class LibraryApplication extends Application {
@@ -72,27 +82,27 @@ public class LibraryApplication extends Application {
         Background background_text = new Background(background_fill_text);
 
 
-        // create a text field
+        // create a text field to add an artist
         TextField textfield1 = new TextField();
         textFields.add(textfield1);
 
-        // create a text field
+        // create a text field to add an album
         TextField textfield2 = new TextField();
         textFields.add(textfield2);
 
-        // create a text field
+        // create a text field to add a song
         TextField textfield3 = new TextField();
         textFields.add(textfield3);
 
-        // create a text field
+        // create a text field to search an artist
         TextField textfield4 = new TextField();
         textFields.add(textfield4);
 
-        // create a text field
+        // create a text field to search an album
         TextField textfield5 = new TextField();
         textFields.add(textfield5);
 
-        // create a text field
+        // create a text field to search a song
         TextField textfield6 = new TextField();
         textFields.add(textfield6);
 
@@ -101,27 +111,27 @@ public class LibraryApplication extends Application {
             tf.setBackground(background_text);
         }
 
-        // create a button
+        // create a button to add artist
         Button button1 = new Button("Search");
         buttons.add(button1);
 
-        // create a button
+        // create a button to add an album
         Button button2 = new Button("Search");
         buttons.add(button2);
 
-        // create a button
+        // create a button to add a song
         Button button3 = new Button("Search");
         buttons.add(button3);
 
-        // create a button
+        // create a button to search artist
         Button button4 = new Button("Add");
         buttons.add(button4);
 
-        // create a button
+        // create a button to search an album
         Button button5 = new Button("Add");
         buttons.add(button5);
 
-        // create a button
+        // create a button to search a song
         Button button6 = new Button("Add");
         buttons.add(button6);
 
@@ -177,6 +187,80 @@ public class LibraryApplication extends Application {
 
         stage.show();
 
+
+        //event handling
+
+        Library MusicLibrary = Library.Instance();
+
+        //search an artist
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                assert textfield1.getText() != null;
+                Optional<Artist> foundArtist = MusicLibrary.getArtist(textfield1.getText());
+
+                Stage response = new Stage();
+                VBox vbox = new VBox();
+                vbox.setPadding( new Insets(40) );
+
+                // set title for the stage
+                response.setTitle("Music Library");
+
+                if (foundArtist.isPresent()){
+                    Image profileImg = foundArtist.get().getProfilePicture();
+                    Label name = new Label(foundArtist.get().getName());
+
+                    ListView<Album> list = new ListView<Album>();
+                    ObservableList<Album> items =FXCollections.observableArrayList (foundArtist.get().getAlbumsList());
+                    list.setItems(items);
+                    list.setPrefWidth(100);
+                    list.setPrefHeight(70);
+
+                    HBox hbx = new HBox();
+                    hbx.getChildren().add(name);
+                    hbx.setAlignment(Pos.CENTER);
+
+                    //ToDo
+                    //Add profile image to the window
+                    vbox.getChildren().addAll( hbx,  list );
+
+
+                }else{
+                    Label error = new Label("No Artists with the name '" + textfield1.getText() +"' exists in the Music Library!" );
+                    HBox hbox = new HBox();
+                    hbox.getChildren().add(error);
+                    hbox.setAlignment(Pos.CENTER);
+                    vbox.getChildren().add(hbox);
+                }
+
+                // create a scene
+                Scene scene = new Scene(vbox);
+
+                // create a background fill
+                BackgroundFill background_fill = new BackgroundFill(Color.web("27496D"),
+                        CornerRadii.EMPTY, Insets.EMPTY);
+
+                // create Background
+                Background background = new Background(background_fill);
+
+                // set background
+                vbox.setBackground(background);
+
+                // set the scene
+                response.setScene(scene);
+
+                response.show();
+            }
+        });
+
+        //add an artist
+        button2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                assert textfield2.getText() != null;
+                MusicLibrary.addArtist(new Artist(textfield2.getText()));
+            }
+        });
 
 
     }

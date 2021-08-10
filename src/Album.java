@@ -1,4 +1,6 @@
-import java.awt.*;
+
+import javafx.scene.image.Image;
+
 import java.util.Iterator;
 import java.util.Objects;
 

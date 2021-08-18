@@ -208,25 +208,34 @@ public class LibraryApplication extends Application {
 
             if (foundArtist.isPresent()){
                 Label name = new Label(foundArtist.get().getName());
+                name.setTextFill(Color.web("F4EEFF"));
 
                 ListView<Album> list = new ListView<>();
                 ObservableList<Album> items =FXCollections.observableArrayList (foundArtist.get().getAlbumsList());
                 list.setItems(items);
                 list.setPrefWidth(100);
                 list.setPrefHeight(70);
+                list.setPadding(new Insets(30));
 
                 HBox hbx = new HBox();
                 hbx.getChildren().add(name);
                 hbx.setAlignment(Pos.CENTER);
+                hbx.setPadding(new Insets(30));
 
                 HBox imageBox = new HBox();
                 ImageView imageView = new ImageView(foundArtist.get().getProfilePicture());
+                imageView.setFitHeight(150);
+                imageView.setFitWidth(150);
                 imageBox.getChildren().add(imageView);
+                imageBox.setAlignment(Pos.CENTER);
+                imageBox.setPadding(new Insets(30));
                 vbox1.getChildren().addAll( hbx, imageBox ,list );
+
 
 
             }else{
                 Label error = new Label("No Artists with the name '" + textfield1.getText() +"' exists in the Music Library!" );
+                error.setTextFill(Color.web("F4EEFF"));
                 HBox hbox = new HBox();
                 hbox.getChildren().add(error);
                 hbox.setAlignment(Pos.CENTER);
@@ -264,6 +273,7 @@ public class LibraryApplication extends Application {
             response.setTitle("Add Artist");
             HBox imageCover = new HBox();
             Label ProfileImageLabel = new Label("Profile Image: ");
+            ProfileImageLabel.setTextFill(Color.web("F4EEFF"));
             Button imageButton = new Button("Choose Image");
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("View Pictures");
@@ -344,6 +354,7 @@ public class LibraryApplication extends Application {
 
             }else{
                 Label error = new Label("No Albums with the name '" + textfield2.getText() +"' exists in the Music Library!" );
+                error.setTextFill(Color.web("F4EEFF"));
                 HBox hbox = new HBox();
                 hbox.getChildren().add(error);
                 hbox.setAlignment(Pos.CENTER);
@@ -384,34 +395,43 @@ public class LibraryApplication extends Application {
 
             HBox artst = new HBox();
             Label albumArtistLabel = new Label("Artist: ");
+            albumArtistLabel.setTextFill(Color.web("F4EEFF"));
             TextField albumArtist = new TextField();
             artst.getChildren().addAll(albumArtistLabel, albumArtist);
             artst.setSpacing(10);
-            artst.setAlignment(Pos.TOP_LEFT);
+            artst.setPadding(new Insets(30));
+             artst.setAlignment(Pos.CENTER);
 
             HBox year = new HBox();
             Label albumYearLabel = new Label("Year: ");
+            albumYearLabel.setTextFill(Color.web("F4EEFF"));
             TextField albumYear = new TextField();
             year.getChildren().addAll(albumYearLabel, albumYear);
             year.setSpacing(10);
-            year.setAlignment(Pos.CENTER_LEFT);
+            year.setPadding(new Insets(30));
+            year.setAlignment(Pos.CENTER);
 
             HBox lang = new HBox();
             Label albumLangLabel = new Label("Language: ");
+            albumLangLabel.setTextFill(Color.web("F4EEFF"));
             TextField albumLang = new TextField();
             lang.getChildren().addAll(albumLangLabel, albumLang);
             lang.setSpacing(10);
-            lang.setAlignment(Pos.TOP_RIGHT);
+            lang.setPadding(new Insets(30));
+            lang.setAlignment(Pos.CENTER);
 
             HBox studio = new HBox();
             Label albumStudioLabel = new Label("Studio: ");
+            albumStudioLabel.setTextFill(Color.web("F4EEFF"));
             TextField albumStudio = new TextField();
             studio.getChildren().addAll(albumStudioLabel, albumStudio);
             studio.setSpacing(10);
-            studio.setAlignment(Pos.CENTER_RIGHT);
+            studio.setPadding(new Insets(30));
+            studio.setAlignment(Pos.CENTER);
 
             HBox imageCover = new HBox();
             Label albumCoverLabel = new Label("Cover Image: ");
+            albumCoverLabel.setTextFill(Color.web("F4EEFF"));
             Button imageButton = new Button("Choose Image");
             FileChooser fileChooser = new FileChooser();
             List<Image> albumCoverImage = new ArrayList<>();
@@ -421,12 +441,15 @@ public class LibraryApplication extends Application {
                     );
             imageCover.getChildren().addAll(albumCoverLabel, imageButton);
             imageCover.setSpacing(10);
-            imageCover.setAlignment(Pos.BOTTOM_LEFT);
+            imageCover.setPadding(new Insets(30));
+            imageCover.setAlignment(Pos.CENTER);
 
             HBox submit = new HBox();
-            Button submitButton = new Button("ADD");
+            Button submitButton = new Button("Add");
+            submit.getChildren().add(submitButton);
             submit.setSpacing(10);
-            submit.setAlignment(Pos.BOTTOM_RIGHT);
+            submit.setPadding(new Insets(30));
+            submit.setAlignment(Pos.CENTER);
 
             vbox14.getChildren().addAll(artst, year, lang, studio, imageCover, submit);
 
@@ -516,6 +539,7 @@ public class LibraryApplication extends Application {
 
             }else{
                 Label error = new Label("No Albums with the name '" + textfield3.getText() +"' exists in the Music Library!" );
+                error.setTextFill(Color.web("F4EEFF"));
                 HBox hbox = new HBox();
                 hbox.getChildren().add(error);
                 hbox.setAlignment(Pos.CENTER);
@@ -555,58 +579,74 @@ public class LibraryApplication extends Application {
 
             HBox path = new HBox();
             Label songPathLabel = new Label("Path: ");
+            songPathLabel.setTextFill(Color.web("F4EEFF"));
             TextField songPath = new TextField();
             path.getChildren().addAll(songPathLabel, songPath);
             path.setSpacing(10);
-            path.setAlignment(Pos.TOP_LEFT);
+            path.setPadding(new Insets(30));
+            path.setAlignment(Pos.CENTER);
 
             HBox artst = new HBox();
             Label songArtistLabel = new Label("Artist: ");
+            songArtistLabel.setTextFill(Color.web("F4EEFF"));
             TextField songArtist = new TextField();
             artst.getChildren().addAll(songArtistLabel, songArtist);
             artst.setSpacing(10);
-            artst.setAlignment(Pos.CENTER_LEFT);
+            artst.setPadding(new Insets(30));
+            artst.setAlignment(Pos.CENTER);
 
             HBox year = new HBox();
             Label songYearLabel = new Label("Year: ");
+            songYearLabel.setTextFill(Color.web("F4EEFF"));
             TextField songYear = new TextField();
             year.getChildren().addAll(songYearLabel, songYear);
             year.setSpacing(10);
-            year.setAlignment(Pos.BASELINE_LEFT);
+            year.setPadding(new Insets(30));
+            year.setAlignment(Pos.CENTER);
 
             HBox lang = new HBox();
             Label songLangLabel = new Label("Language: ");
+            songLangLabel.setTextFill(Color.web("F4EEFF"));
             TextField songLang = new TextField();
             lang.getChildren().addAll(songLangLabel, songLang);
             lang.setSpacing(10);
-            lang.setAlignment(Pos.TOP_RIGHT);
+            lang.setPadding(new Insets(30));
+            lang.setAlignment(Pos.CENTER);
 
             HBox studio = new HBox();
             Label songStudioLabel = new Label("Studio: ");
+            songStudioLabel.setTextFill(Color.web("F4EEFF"));
             TextField songStudio = new TextField();
             studio.getChildren().addAll(songStudioLabel, songStudio);
             studio.setSpacing(10);
-            studio.setAlignment(Pos.CENTER_RIGHT);
+            studio.setPadding(new Insets(30));
+            studio.setAlignment(Pos.CENTER);
 
             HBox length = new HBox();
             Label songLengthLabel = new Label("Length: ");
+            songLengthLabel.setTextFill(Color.web("F4EEFF"));
             TextField songLength = new TextField();
             length.getChildren().addAll(songLengthLabel, songLength);
             length.setSpacing(10);
-            length.setAlignment(Pos.BASELINE_RIGHT);
+            length.setPadding(new Insets(30));
+            length.setAlignment(Pos.CENTER);
 
             HBox feat = new HBox();
-            Label songCollabsLabel = new Label("feat: ");
+            Label songCollabsLabel = new Label("Feat: ");
+            songCollabsLabel.setTextFill(Color.web("F4EEFF"));
             TextField songCollabs = new TextField();
             songCollabs.setText("enter comma separated artists.");
             feat.getChildren().addAll(songCollabsLabel, songCollabs);
             feat.setSpacing(10);
-            feat.setAlignment(Pos.BOTTOM_LEFT);
+            feat.setPadding(new Insets(30));
+            feat.setAlignment(Pos.CENTER);
 
             HBox submit = new HBox();
-            Button submitButton = new Button("ADD");
+            Button submitButton = new Button("Add");
+            submit.getChildren().add(submitButton);
             submit.setSpacing(10);
-            submit.setAlignment(Pos.BOTTOM_RIGHT);
+            submit.setPadding(new Insets(30));
+            submit.setAlignment(Pos.CENTER);
 
             vbox14.getChildren().addAll( path, artst, year, lang, studio, length, feat, submit);
 

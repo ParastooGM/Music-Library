@@ -77,51 +77,47 @@ public class Library {
     }
 
     /**
-     * Adds an Artist with their songs and albums to the library.
+     * Adds an Artist with their songs and albums to the library. If an artist with the same name is already in the database,
+     * the new artist will replace it.
      * @param pArtist the artist to be added.
      * @pre pArtist != null
-     * @throws IllegalArgumentException if an artist with the same name is already in the database.
      */
     public void addArtist(Artist pArtist) {
         assert pArtist != null;
 
-        if (aArtists.get(pArtist.getName()) == null){ //if the artist is not already in the database
+        aArtists.put(pArtist.getName() , pArtist);
+        Iterator iter = pArtist.getAlbums();
 
-            aArtists.put(pArtist.getName() , pArtist);
-            Iterator iter = pArtist.getAlbums();
+        while (iter.hasNext()) {
+            Album albm = (Album) iter.next();
 
-            while (iter.hasNext()) {
-                Album albm = (Album) iter.next();
+            HashSet<Album> albm_list = aAlbums.get(albm.getTitle());
+            if (albm_list != null){
+                albm_list.add(albm);
+                aAlbums.put(albm.getTitle(), albm_list);
+            }else{
+                HashSet<Album> new_list = new HashSet<>();
+                new_list.add(albm);
+                aAlbums.put(albm.getTitle(), new_list);
+            }
 
-                HashSet<Album> albm_list = aAlbums.get(albm.getTitle());
-                if (albm_list != null){
-                    albm_list.add(albm);
-                    aAlbums.put(albm.getTitle(), albm_list);
+            Iterator iter_song = albm.getSongs();
+            while (iter_song.hasNext()) {
+
+                Song s = (Song) iter.next();
+
+                HashSet<Song> song_list = aSongs.get(s.getTitle());
+                if (song_list != null){
+                    song_list.add(s);
+                    aSongs.put(s.getTitle(), song_list);
                 }else{
-                    HashSet<Album> new_list = new HashSet<>();
-                    new_list.add(albm);
-                    aAlbums.put(albm.getTitle(), new_list);
-                }
-
-                Iterator iter_song = albm.getSongs();
-                while (iter_song.hasNext()) {
-
-                    Song s = (Song) iter.next();
-
-                    HashSet<Song> song_list = aSongs.get(s.getTitle());
-                    if (song_list != null){
-                        song_list.add(s);
-                        aSongs.put(s.getTitle(), song_list);
-                    }else{
-                        HashSet<Song> new_list = new HashSet<>();
-                        new_list.add(s);
-                        aSongs.put(s.getTitle(), new_list);
-                    }
+                    HashSet<Song> new_list = new HashSet<>();
+                    new_list.add(s);
+                    aSongs.put(s.getTitle(), new_list);
                 }
             }
-        }else{
-            throw new IllegalArgumentException("Cannot add artist because an artist with the same name already exists in the library.");
         }
+
 
     }
 

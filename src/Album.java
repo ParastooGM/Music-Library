@@ -86,11 +86,9 @@ public class Album extends SongList {
 
     @Override
     public String toString() {
-        return "Album{" +
-                "Artist=" + aArtist +
+        return  aTitle + " {" +
+                "Artist=" + aArtist.getName() +
                 ", Year=" + aYear +
-                ", Cover Image=" + aCover +
-                ", Title='" + aTitle + '\'' +
                 '}';
     }
 }

@@ -188,11 +188,10 @@ public class Song implements Listenable , Model, ToBeVisited{
 
     @Override
     public String toString() {
-        return "Song{" +
-                " Artist=" + aArtist +
-                ", Title='" + aTitle + '\'' +
+        return  aTitle + " {" +
+                " Artist=" + aArtist.getName() +
                 ", Year=" + aYear +
-                ", Ft=" + aCollabs +
+                ", Ft=" + aCollabs.get() +
                 '}';
     }
 }

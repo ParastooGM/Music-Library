@@ -213,14 +213,17 @@ public class LibraryApplication extends Application {
                 ListView<Album> list = new ListView<>();
                 ObservableList<Album> items =FXCollections.observableArrayList (foundArtist.get().getAlbumsList());
                 list.setItems(items);
+                list.setFixedCellSize(40);
+                list.setPrefHeight(80);
                 list.setPrefWidth(100);
-                list.setPrefHeight(70);
                 list.setPadding(new Insets(30));
 
                 HBox hbx = new HBox();
+                name.setScaleX(2);
+                name.setScaleY(2);
                 hbx.getChildren().add(name);
                 hbx.setAlignment(Pos.CENTER);
-                hbx.setPadding(new Insets(30));
+                hbx.setPadding(new Insets(10));
 
                 HBox imageBox = new HBox();
                 ImageView imageView = new ImageView(foundArtist.get().getProfilePicture());
@@ -320,10 +323,15 @@ public class LibraryApplication extends Application {
                         BufferedImage bufferedImage = ImageIO.read(file);
                         Image image = SwingFXUtils.toFXImage(bufferedImage, null);
                         newArtist.changeProfilePicture(image);
+                        textfield4.setText("Added successfully!");
                     } catch (IOException ex) {
                         System.out.println(ex.getMessage());
+
                     }
                 }
+
+                response.close();
+
 
                     });
                 });
@@ -346,9 +354,9 @@ public class LibraryApplication extends Application {
                 ListView<Album> list = new ListView<>();
                 ObservableList<Album> items =FXCollections.observableArrayList (foundAlbum.get());
                 list.setItems(items);
+                list.setFixedCellSize(40);
+                list.setPrefHeight(80);
                 list.setPrefWidth(100);
-                list.setPrefHeight(70);
-
                 vbox12.getChildren().addAll(  list );
 
 
@@ -499,15 +507,46 @@ public class LibraryApplication extends Application {
                                 && albumStudio.getText() != null;
 
                 Optional<Artist> a = MusicLibrary.getArtist(albumArtist.getText());
-                        Artist newArtist;
+
                         if (a.isEmpty()){
-                            newArtist = new Artist (albumArtist.getText());
-                            MusicLibrary.addArtist(newArtist);
+                            Stage errorStage = new Stage();
+                            VBox errorBox = new VBox();
+                            errorBox.setPadding( new Insets(40) );
+
+                            Label error =  new Label(albumArtist.getText() + " does not currently exist in the library. Please add the artist first.");
+
+                            errorBox.getChildren().add(error);
+
+                            // create a scene
+                            Scene errorScene = new Scene(errorBox);
+
+                            // create a background fill
+                            BackgroundFill Error_background_fill = new BackgroundFill(Color.web("27496D"),
+                                    CornerRadii.EMPTY, Insets.EMPTY);
+
+                            // create Background
+                            Background error_background = new Background(Error_background_fill);
+
+                            // set background
+                            errorBox.setBackground(error_background);
+
+                            // set the scene
+                            errorStage.setScene(errorScene);
+
+                            // set title for the stage
+                            errorStage.setTitle("Error");
+
+                            errorStage.show();
+
+
                         }else{
-                            newArtist = a.get();
+
+                        Album newAlbum = new Album( a.get() , albumName, parseInt(albumYear.getText()), albumLang.getText(), albumStudio.getText(),albumCoverImage.get(0));
+                        a.get().addAlbum(newAlbum);
+                        MusicLibrary.addArtist(a.get());
+                        response.close();
+                        textfield5.setText("Added successfully!");
                         }
-                        Album newAlbum = new Album(newArtist , albumName, parseInt(albumYear.getText()), albumLang.getText(), albumStudio.getText(),albumCoverImage.get(0));
-                        newArtist.addAlbum(newAlbum);
 
                     });
         }
@@ -531,19 +570,17 @@ public class LibraryApplication extends Application {
                 ListView<Song> list = new ListView<>();
                 ObservableList<Song> items =FXCollections.observableArrayList (foundSong.get());
                 list.setItems(items);
+                list.setFixedCellSize(40);
+                list.setPrefHeight(80);
                 list.setPrefWidth(100);
-                list.setPrefHeight(70);
 
                 vbox13.getChildren().addAll(  list );
 
 
             }else{
-                Label error = new Label("No Albums with the name '" + textfield3.getText() +"' exists in the Music Library!" );
+                Label error = new Label("No Songs with the name '" + textfield3.getText() +"' exists in the Music Library!" );
                 error.setTextFill(Color.web("F4EEFF"));
-                HBox hbox = new HBox();
-                hbox.getChildren().add(error);
-                hbox.setAlignment(Pos.CENTER);
-                vbox13.getChildren().add(hbox);
+                vbox13.getChildren().add(error);
             }
 
             // create a scene
@@ -671,23 +708,57 @@ public class LibraryApplication extends Application {
             submitButton.setOnAction(actionEvent1 -> {
                 assert songArtist.getText() != null && songLang.getText() != null && songYear.getText() != null
                         && songStudio.getText() != null && songLength.getText() != null && songPath.getText() != null;
-                Optional<Artist> a = MusicLibrary.getArtist(songArtist.getText());
-                Artist newArtist;
-                if (a.isEmpty()){
-                    newArtist = new Artist (songArtist.getText());
-                    MusicLibrary.addArtist(newArtist);
-                }else{
-                    newArtist = a.get();
-                }
-                Song newSong = new Song( new File(songPath.getText()), newArtist , songName, parseInt(songYear.getText()), songLang.getText(), songStudio.getText(), parseLong(songLength.getText()));
-                newArtist.addSong(newSong);
 
-                if (!songCollabs.getText().isEmpty()) {
-                    String[] collabsList = songCollabs.getText().split(",", -1);
-                    for (String s : collabsList){
-                        newSong.addCollab(new Artist(s));
+                Optional<Artist> a = MusicLibrary.getArtist(songArtist.getText());
+
+                if (a.isEmpty()){
+                    Stage errorStage = new Stage();
+                    VBox errorBox = new VBox();
+                    errorBox.setPadding( new Insets(40) );
+
+                    Label error =  new Label(songArtist.getText() + " does not currently exist in the library. Please add the artist first.");
+
+                    errorBox.getChildren().add(error);
+
+                    // create a scene
+                    Scene errorScene = new Scene(errorBox);
+
+                    // create a background fill
+                    BackgroundFill Error_background_fill = new BackgroundFill(Color.web("27496D"),
+                            CornerRadii.EMPTY, Insets.EMPTY);
+
+                    // create Background
+                    Background error_background = new Background(Error_background_fill);
+
+                    // set background
+                    errorBox.setBackground(error_background);
+
+                    // set the scene
+                    errorStage.setScene(errorScene);
+
+                    // set title for the stage
+                    errorStage.setTitle("Error");
+
+                    errorStage.show();
+
+
+                }else{
+
+                    Song newSong = new Song( new File(songPath.getText()), a.get() , songName, parseInt(songYear.getText()), songLang.getText(), songStudio.getText(), parseLong(songLength.getText()));
+                    a.get().addSong(newSong);
+
+                    if (!songCollabs.getText().isEmpty()) {
+                        String[] collabsList = songCollabs.getText().split(",", -1);
+                        for (String s : collabsList){
+                            newSong.addCollab(new Artist(s));
+                        }
                     }
+                    MusicLibrary.addArtist(a.get());
+                    response.close();
+                    textfield6.setText("Added successfully!");
+
                 }
+
 
             });
         });

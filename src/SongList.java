@@ -115,6 +115,8 @@ public abstract class SongList implements Listenable, ToBeVisited {
     public void play() {
         for (Song s : aSongs){
             s.play();
+            currentSongNum++;
+
         }
     }
 
@@ -124,7 +126,28 @@ public abstract class SongList implements Listenable, ToBeVisited {
     @Override
     public void restart() {
         currentSongNum = 0;
+        play();
     }
+
+    @Override
+    public void stop(){
+        aSongs.get(currentSongNum).stop();
+    };
+
+    @Override
+    public void pause(){
+        aSongs.get(currentSongNum).pause();
+    };
+
+    @Override
+    public void resumeAudio(){
+        aSongs.get(currentSongNum).resumeAudio();
+        for (int i = currentSongNum++; i< numSongs; i++ ){
+            aSongs.get(i).play();
+            currentSongNum++;
+        }
+    };
+
 
     /**
      * Implementing the acceptVisitor method from ToBeVisited interface.

@@ -1,5 +1,10 @@
+import javax.sound.sampled.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class Song implements Listenable , Model, ToBeVisited{
 
@@ -12,6 +17,12 @@ public class Song implements Listenable , Model, ToBeVisited{
     final private long aLength;
     final private Optional <List<Artist>> aCollabs = Optional.empty();
     private final Set<Observer> aObservers = new HashSet<>(); //set data structure to store the observers for this model.
+    private Long currentFrame; // to store current position
+    private Clip clip;
+    private String status ="pause"; // current status of clip
+    private AudioInputStream audioInputStream;
+    private MediaPlayer mediaPlayer;
+    private Duration currentTime;
 
     public Song(File path, Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio, long aLength) {
         assert path.exists() && aArtist!= null;
@@ -57,6 +68,30 @@ public class Song implements Listenable , Model, ToBeVisited{
     public Artist getArtist() {
         return aArtist;
     }
+
+    /**
+     * @return the status of the song : play  or pause.
+     */
+    public String getSongStatus(){
+        return this.status;
+    }
+
+
+    /**
+     * Returns the audio format of the song. Songs can only be
+     * in a format of mp3 or wav, else an empty optional object is returned.
+     * @return the audio format of the song
+     */
+    public Optional<AUDIO_FORMAT> getAudioFormat(){
+       if (this.aPath.toString().substring(-3, -1) == AUDIO_FORMAT.WAV.toString()){
+            return Optional.of(AUDIO_FORMAT.WAV);
+       }else if (this.aPath.toString().substring(-3, -1) == AUDIO_FORMAT.MP3.toString()){
+           return Optional.of(AUDIO_FORMAT.MP3);
+       }else{
+           return Optional.empty();
+       }
+    };
+
 
     /**
      * @return the title of the song.
@@ -115,9 +150,34 @@ public class Song implements Listenable , Model, ToBeVisited{
      */
     @Override
     public void play() {
-        //TODO
-        //PLAY AUDIO FILE
+        if(getAudioFormat().get() == AUDIO_FORMAT.WAV){
+            try{
+                // create AudioInputStream object
+                audioInputStream = AudioSystem.getAudioInputStream(this.aPath.getAbsoluteFile());
+                // create clip reference
+                clip = AudioSystem.getClip();
+                // open audioInputStream to the clip
+                clip.open(audioInputStream);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                clip.start();
 
+            } catch (UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            }
+        }else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+            Media hit = new Media(aPath.toURI().toString());
+            mediaPlayer = new MediaPlayer(hit);
+            mediaPlayer.play();
+
+        }else{
+            throw new IllegalStateException("Can only play audio files that are either MP3 or WAV.");
+        }
+
+        status = "play";
         NowPlayingObserver observer = new NowPlayingObserver("Observer 1");
         aObservers.add(observer);
 
@@ -126,17 +186,120 @@ public class Song implements Listenable , Model, ToBeVisited{
         for (Observer obs : aObservers){
             obs.noticed( this);
         }
+    }
+
+    /**
+     * Method to pause the audio from the Listenable interface.
+     */
+    @Override
+    public void pause() {
+        if (status.equals("pause")) {
+            System.out.println("audio is already paused");
+            return;
+            }
+        if (getAudioFormat().get() == AUDIO_FORMAT.WAV) {
+            currentFrame = this.clip.getMicrosecondPosition();
+            clip.stop();
+        }else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+            mediaPlayer.pause();
+            currentTime = mediaPlayer.getCurrentTime();
+         }else{
+            throw new IllegalStateException("Can only play audio files that are either MP3 or WAV.");
+        }
+        status = "pause";
+    }
+
+    /**
+     * Method to reset audio stream
+     * @throws UnsupportedAudioFileException
+     * @throws IOException
+     * @throws LineUnavailableException
+     */
+
+    private void resetAudioStream() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+
+        audioInputStream = AudioSystem.getAudioInputStream(
+                this.aPath.getAbsoluteFile());
+        clip.open(audioInputStream);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
 
     }
 
     /**
-     * restarts the song from the beginning.
+     * restarts the song from the beginning, from the Listenable interface.
      */
     @Override
     public void restart() {
-        //TODO
-        //RESTART AUDIO FILE
+        if (getAudioFormat().get() == AUDIO_FORMAT.WAV) {
+            clip.stop();
+            clip.close();
+        try {
+            resetAudioStream();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+            currentFrame = 0L;
+            clip.setMicrosecondPosition(0);
+            this.play();
+        } else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+            mediaPlayer.seek(mediaPlayer.getStartTime());
+            mediaPlayer.play();
+        }else{
+            throw new IllegalStateException("Can only play audio files that are either MP3 or WAV.");
+        }
+            }
+
+    /**
+     * Method to stop the audio from the Listenable interface.
+     */
+    @Override
+    public void stop(){
+        if (getAudioFormat().get() == AUDIO_FORMAT.WAV) {
+            currentFrame = 0L;
+            clip.stop();
+            clip.close();
+        }else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+            mediaPlayer.stop();
+        }else{
+            throw new IllegalStateException("Can only play audio files that are either MP3 or WAV.");
+        }
+
     }
+
+    /**
+     * Method to resume the audio from the Listenable interface.
+     */
+    @Override
+    public void resumeAudio(){
+        if (getAudioFormat().get() == AUDIO_FORMAT.WAV) {
+        if (status.equals("play"))
+        {
+            System.out.println("Audio is already being played");
+            return;
+        }
+        clip.close();
+        try {
+            resetAudioStream();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+        clip.setMicrosecondPosition(currentFrame);
+        play();
+        } else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+            mediaPlayer.seek(currentTime);
+        }else{
+        throw new IllegalStateException("Can only play audio files that are either MP3 or WAV.");
+        }
+    }
+
 
     /**
      * Implementing the acceptObserver method from the Model Interface.

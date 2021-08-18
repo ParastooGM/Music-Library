@@ -113,27 +113,27 @@ public class LibraryApplication extends Application {
             tf.setBackground(background_text);
         }
 
-        // create a button to add artist
+        // create a button to search artist
         Button button1 = new Button("Search");
         buttons.add(button1);
 
-        // create a button to add an album
+        // create a button to search an album
         Button button2 = new Button("Search");
         buttons.add(button2);
 
-        // create a button to add a song
+        // create a button to search a song
         Button button3 = new Button("Search");
         buttons.add(button3);
 
-        // create a button to search artist
+        // create a button to add artist
         Button button4 = new Button("Add");
         buttons.add(button4);
 
-        // create a button to search an album
+        // create a button to add an album
         Button button5 = new Button("Add");
         buttons.add(button5);
 
-        // create a button to search a song
+        // create a button to add a song
         Button button6 = new Button("Add");
         buttons.add(button6);
 

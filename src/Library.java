@@ -80,10 +80,10 @@ public class Library {
         assert pArtist != null;
 
         aArtists.put(pArtist.getName() , pArtist);
-        Iterator iter = pArtist.getAlbums();
+        Iterator<Album> iter = pArtist.getAlbums();
 
         while (iter.hasNext()) {
-            Album albm = (Album) iter.next();
+            Album albm = iter.next();
 
             HashSet<Album> albm_list = aAlbums.get(albm.getTitle());
             if (albm_list != null){
@@ -95,10 +95,10 @@ public class Library {
                 aAlbums.put(albm.getTitle(), new_list);
             }
 
-            Iterator iter_song = albm.getSongs();
+            Iterator<Song> iter_song = albm.getSongs();
             while (iter_song.hasNext()) {
 
-                Song s = (Song) iter.next();
+                Song s = iter_song.next();
 
                 HashSet<Song> song_list = aSongs.get(s.getTitle());
                 if (song_list != null){
@@ -124,13 +124,13 @@ public class Library {
         assert pArtist != null;
         if (aArtists.get(pArtist.getName()) != null) {
             aArtists.remove(pArtist.getName());
-            Iterator iter = pArtist.getAlbums();
+            Iterator<Album> iter = pArtist.getAlbums();
             while (iter.hasNext()) {
-                Album albm = (Album) iter.next();
+                Album albm = iter.next();
                 aAlbums.remove(albm);
-                Iterator iter_song = albm.getSongs();
+                Iterator<Song> iter_song = albm.getSongs();
                 while (iter_song.hasNext()) {
-                    aSongs.remove((Song) iter_song.next());
+                    aSongs.remove(iter_song.next());
                 }
             }
         }

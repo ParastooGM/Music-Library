@@ -12,7 +12,7 @@ public class Artist {
 
     /**
      * constructor of the Artist class.
-     * @param pName
+     * @param pName name of the artist.
      * @pre pName !=null
      */
     public Artist(String pName) {

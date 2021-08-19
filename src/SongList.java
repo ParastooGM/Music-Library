@@ -132,12 +132,12 @@ public abstract class SongList implements Listenable, ToBeVisited {
     @Override
     public void stop(){
         aSongs.get(currentSongNum).stop();
-    };
+    }
 
     @Override
     public void pause(){
         aSongs.get(currentSongNum).pause();
-    };
+    }
 
     @Override
     public void resumeAudio(){
@@ -146,7 +146,7 @@ public abstract class SongList implements Listenable, ToBeVisited {
             aSongs.get(i).play();
             currentSongNum++;
         }
-    };
+    }
 
 
     /**
@@ -158,7 +158,7 @@ public abstract class SongList implements Listenable, ToBeVisited {
     public void acceptVisitor(Visitor v){
         assert v != null;
         v.VisitSongList(this);
-    };
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,13 +1,13 @@
 public interface Listenable {
 
-    public void play();
+    void play();
 
-    public void restart();
+    void restart();
 
-    public void stop();
+    void stop();
 
-    public void pause();
+    void pause();
 
-    public void resumeAudio();
+    void resumeAudio();
 
 }

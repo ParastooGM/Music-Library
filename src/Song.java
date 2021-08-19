@@ -15,7 +15,7 @@ public class Song implements Listenable , Model, ToBeVisited{
     final private String aLanguage;
     final private String aStudio;
     final private long aLength;
-    final private Optional <List<Artist>> aCollabs = Optional.empty();
+    private Optional <List<Artist>> aCollabs = Optional.empty();
     private final Set<Observer> aObservers = new HashSet<>(); //set data structure to store the observers for this model.
     private Long currentFrame; // to store current position
     private Clip clip;
@@ -45,7 +45,11 @@ public class Song implements Listenable , Model, ToBeVisited{
         assert pArtist != null;
         assert pArtist != aArtist;
 
-        if (!aCollabs.get().contains(pArtist)){
+        if(aCollabs.isEmpty()){
+            ArrayList<Artist> newCollabs = new ArrayList<>();
+            newCollabs.add(pArtist);
+            aCollabs = Optional.of(newCollabs);
+        } else if ( !aCollabs.get().contains(pArtist)){
             aCollabs.get().add(pArtist);
         }
     }
@@ -79,18 +83,19 @@ public class Song implements Listenable , Model, ToBeVisited{
 
     /**
      * Returns the audio format of the song. Songs can only be
-     * in a format of mp3 or wav, else an empty optional object is returned.
+     * in a format of mp3 or wav, else a dummy object is returned.
      * @return the audio format of the song
      */
-    public Optional<AUDIO_FORMAT> getAudioFormat(){
-       if (this.aPath.toString().substring(-3, -1) == AUDIO_FORMAT.WAV.toString()){
-            return Optional.of(AUDIO_FORMAT.WAV);
-       }else if (this.aPath.toString().substring(-3, -1) == AUDIO_FORMAT.MP3.toString()){
-           return Optional.of(AUDIO_FORMAT.MP3);
+    public AUDIO_FORMAT getAudioFormat(){
+        String format = aPath.toString().substring(aPath.toString().length() - 3);
+       if (format.equals(AUDIO_FORMAT.WAV.toString())){
+            return AUDIO_FORMAT.WAV;
+       }else if (format.equals(AUDIO_FORMAT.MP3.toString())){
+           return AUDIO_FORMAT.MP3;
        }else{
-           return Optional.empty();
+           return AUDIO_FORMAT.OTHER;
        }
-    };
+    }
 
 
     /**
@@ -150,7 +155,7 @@ public class Song implements Listenable , Model, ToBeVisited{
      */
     @Override
     public void play() {
-        if(getAudioFormat().get() == AUDIO_FORMAT.WAV){
+        if(getAudioFormat() == AUDIO_FORMAT.WAV){
             try{
                 // create AudioInputStream object
                 audioInputStream = AudioSystem.getAudioInputStream(this.aPath.getAbsoluteFile());
@@ -161,14 +166,10 @@ public class Song implements Listenable , Model, ToBeVisited{
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
                 clip.start();
 
-            } catch (UnsupportedAudioFileException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (LineUnavailableException e) {
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 e.printStackTrace();
             }
-        }else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+        }else if (getAudioFormat() == AUDIO_FORMAT.MP3){
             Media hit = new Media(aPath.toURI().toString());
             mediaPlayer = new MediaPlayer(hit);
             mediaPlayer.play();
@@ -197,10 +198,10 @@ public class Song implements Listenable , Model, ToBeVisited{
             System.out.println("audio is already paused");
             return;
             }
-        if (getAudioFormat().get() == AUDIO_FORMAT.WAV) {
+        if (getAudioFormat() == AUDIO_FORMAT.WAV) {
             currentFrame = this.clip.getMicrosecondPosition();
             clip.stop();
-        }else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+        }else if (getAudioFormat() == AUDIO_FORMAT.MP3){
             mediaPlayer.pause();
             currentTime = mediaPlayer.getCurrentTime();
          }else{
@@ -211,9 +212,7 @@ public class Song implements Listenable , Model, ToBeVisited{
 
     /**
      * Method to reset audio stream
-     * @throws UnsupportedAudioFileException
-     * @throws IOException
-     * @throws LineUnavailableException
+     * @throws UnsupportedAudioFileException , IOException , LineUnavailableException
      */
 
     private void resetAudioStream() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -230,22 +229,18 @@ public class Song implements Listenable , Model, ToBeVisited{
      */
     @Override
     public void restart() {
-        if (getAudioFormat().get() == AUDIO_FORMAT.WAV) {
+        if (getAudioFormat() == AUDIO_FORMAT.WAV) {
             clip.stop();
             clip.close();
         try {
             resetAudioStream();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
             currentFrame = 0L;
             clip.setMicrosecondPosition(0);
             this.play();
-        } else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+        } else if (getAudioFormat() == AUDIO_FORMAT.MP3){
             mediaPlayer.seek(mediaPlayer.getStartTime());
             mediaPlayer.play();
         }else{
@@ -258,11 +253,11 @@ public class Song implements Listenable , Model, ToBeVisited{
      */
     @Override
     public void stop(){
-        if (getAudioFormat().get() == AUDIO_FORMAT.WAV) {
+        if (getAudioFormat() == AUDIO_FORMAT.WAV) {
             currentFrame = 0L;
             clip.stop();
             clip.close();
-        }else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+        }else if (getAudioFormat() == AUDIO_FORMAT.MP3){
             mediaPlayer.stop();
         }else{
             throw new IllegalStateException("Can only play audio files that are either MP3 or WAV.");
@@ -275,28 +270,24 @@ public class Song implements Listenable , Model, ToBeVisited{
      */
     @Override
     public void resumeAudio(){
-        if (getAudioFormat().get() == AUDIO_FORMAT.WAV) {
-        if (status.equals("play"))
-        {
-            System.out.println("Audio is already being played");
-            return;
-        }
-        clip.close();
-        try {
-            resetAudioStream();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-        clip.setMicrosecondPosition(currentFrame);
-        play();
-        } else if (getAudioFormat().get() == AUDIO_FORMAT.MP3){
+
+        if (getAudioFormat() == AUDIO_FORMAT.WAV) {
+            if (status.equals("play")) {
+                System.out.println("Audio is already being played");
+                return;
+            }
+            clip.close();
+            try {
+                resetAudioStream();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                e.printStackTrace();
+            }
+                clip.setMicrosecondPosition(currentFrame);
+            play();
+        } else if (getAudioFormat() == AUDIO_FORMAT.MP3){
             mediaPlayer.seek(currentTime);
         }else{
-        throw new IllegalStateException("Can only play audio files that are either MP3 or WAV.");
+            throw new IllegalStateException("Can only play audio files that are either MP3 or WAV.");
         }
     }
 
@@ -334,7 +325,7 @@ public class Song implements Listenable , Model, ToBeVisited{
     public void acceptVisitor(Visitor v){
         assert v != null;
         v.VisitSong(this);
-    };
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -351,10 +342,18 @@ public class Song implements Listenable , Model, ToBeVisited{
 
     @Override
     public String toString() {
-        return  aTitle + " {" +
-                " Artist=" + aArtist.getName() +
-                ", Year=" + aYear +
-                ", Ft=" + aCollabs.get() +
-                '}';
+        if (aCollabs.isEmpty()){
+            return  aTitle + " {" +
+                    " Artist=" + aArtist.getName() +
+                    ", Year=" + aYear +
+                    '}';
+        }else{
+            return  aTitle + " {" +
+                    " Artist=" + aArtist.getName() +
+                    ", Year=" + aYear +
+                    ", Ft=" + aCollabs.get() +
+                    '}';
+        }
+
     }
 }

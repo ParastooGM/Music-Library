@@ -10,6 +10,7 @@ public class Song implements Listenable , Model, ToBeVisited{
 
     final private File aPath;
     final private Artist aArtist;
+    final private Album aAlbum;
     final private String aTitle;
     final private int aYear;
     final private String aLanguage;
@@ -24,8 +25,8 @@ public class Song implements Listenable , Model, ToBeVisited{
     private MediaPlayer mediaPlayer;
     private Duration currentTime;
 
-    public Song(File path, Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio, long aLength) {
-        assert path.exists() && aArtist!= null;
+    public Song(File path, Artist aArtist,Album album ,String aTitle, int aYear, String aLanguage, String aStudio, long aLength) {
+        assert path.exists() && aArtist!= null && album != null;
 
         this.aLength = aLength;
         this.aPath = path;
@@ -34,6 +35,7 @@ public class Song implements Listenable , Model, ToBeVisited{
         this.aYear = aYear;
         this.aLanguage = aLanguage;
         this.aStudio = aStudio;
+        this.aAlbum = album;
     }
 
     /**
@@ -71,6 +73,13 @@ public class Song implements Listenable , Model, ToBeVisited{
      */
     public Artist getArtist() {
         return aArtist;
+    }
+
+    /**
+     * @return the album of the song.
+     */
+    public Album getAlbum() {
+        return aAlbum;
     }
 
     /**

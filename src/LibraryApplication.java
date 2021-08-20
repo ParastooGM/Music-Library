@@ -52,23 +52,23 @@ public class LibraryApplication extends Application {
         HBox albumLabel = new HBox();
         HBox songLabel = new HBox();
 
-        List<Label> lables = new ArrayList<>();
+        List<Label> labels = new ArrayList<>();
         List<TextField> textFields = new ArrayList<>();
         List<Button> buttons = new ArrayList<>();
 
         // create a label
         Label labelArtist = new Label("Artist ");
-        lables.add(labelArtist);
+        labels.add(labelArtist);
 
         // create a label
         Label labelSong = new Label("Song ");
-        lables.add(labelSong);
+        labels.add(labelSong);
 
         // create a label
         Label labelAlbum = new Label("Album ");
-        lables.add(labelAlbum);
+        labels.add(labelAlbum);
 
-        for (Label l : lables){
+        for (Label l : labels){
             l.setScaleX(1.7);
             l.setScaleY(1.7);
             l.setPadding(new Insets(8));
@@ -210,13 +210,36 @@ public class LibraryApplication extends Application {
                 Label name = new Label(foundArtist.get().getName());
                 name.setTextFill(Color.web("F4EEFF"));
 
-                ListView<Album> list = new ListView<>();
                 ObservableList<Album> items =FXCollections.observableArrayList (foundArtist.get().getAlbumsList());
-                list.setItems(items);
-                list.setFixedCellSize(40);
-                list.setPrefHeight(80);
-                list.setPrefWidth(100);
+                ListView<Album> list = new ListView<>(items);
+                list.setFixedCellSize(50);
+                list.setPrefHeight(180);
+                list.setPrefWidth(250);
                 list.setPadding(new Insets(30));
+
+                HBox ButtonBox = new HBox();
+                Button playButton = new Button("Play");
+                Button pauseButton = new Button("Pause");
+                Button resumeButton = new Button("Resume");
+                Button restartButton = new Button("Restart");
+                Button stopButton = new Button("Stop");
+                ButtonBox.getChildren().addAll(playButton, pauseButton, resumeButton, restartButton, stopButton);
+
+                ButtonBox.setAlignment(Pos.CENTER);
+                ButtonBox.setPadding(new Insets(10));
+                ButtonBox.setSpacing(10);
+
+
+                playButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().play());
+
+                pauseButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().pause());
+
+                resumeButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().resumeAudio());
+
+                restartButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().restart());
+
+                stopButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().stop());
+
 
                 HBox hbx = new HBox();
                 name.setScaleX(2);
@@ -232,7 +255,7 @@ public class LibraryApplication extends Application {
                 imageBox.getChildren().add(imageView);
                 imageBox.setAlignment(Pos.CENTER);
                 imageBox.setPadding(new Insets(30));
-                vbox1.getChildren().addAll( hbx, imageBox ,list );
+                vbox1.getChildren().addAll( hbx, imageBox ,list, ButtonBox );
 
 
 
@@ -351,13 +374,39 @@ public class LibraryApplication extends Application {
 
             if (foundAlbum.isPresent()){
 
-                ListView<Album> list = new ListView<>();
+
                 ObservableList<Album> items =FXCollections.observableArrayList (foundAlbum.get());
-                list.setItems(items);
+                ListView<Album> list = new ListView<>(items);
                 list.setFixedCellSize(40);
                 list.setPrefHeight(80);
                 list.setPrefWidth(100);
-                vbox12.getChildren().addAll(  list );
+
+                HBox ButtonBox = new HBox();
+                Button playButton = new Button("Play");
+                Button pauseButton = new Button("Pause");
+                Button resumeButton = new Button("Resume");
+                Button restartButton = new Button("Restart");
+                Button stopButton = new Button("Stop");
+                ButtonBox.getChildren().addAll(playButton, pauseButton, resumeButton, restartButton, stopButton);
+
+                ButtonBox.setAlignment(Pos.CENTER);
+                ButtonBox.setPadding(new Insets(10));
+                ButtonBox.setSpacing(10);
+
+
+                playButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().play());
+
+                pauseButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().pause());
+
+                resumeButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().resumeAudio());
+
+                restartButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().restart());
+
+                stopButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().stop());
+
+
+                vbox12.getChildren().addAll(  list , ButtonBox);
+
 
 
             }else{
@@ -567,15 +616,38 @@ public class LibraryApplication extends Application {
 
             if (foundSong.isPresent()){
 
-                ListView<Song> list = new ListView<>();
+
                 ObservableList<Song> items =FXCollections.observableArrayList (foundSong.get());
-                list.setItems(items);
+                ListView<Song> list = new ListView<>(items);
                 list.setFixedCellSize(40);
                 list.setPrefHeight(80);
                 list.setPrefWidth(100);
 
-                vbox13.getChildren().addAll(  list );
+                HBox ButtonBox = new HBox();
+                Button playButton = new Button("Play");
+                Button pauseButton = new Button("Pause");
+                Button resumeButton = new Button("Resume");
+                Button restartButton = new Button("Restart");
+                Button stopButton = new Button("Stop");
+                ButtonBox.getChildren().addAll(playButton, pauseButton, resumeButton, restartButton, stopButton);
 
+                ButtonBox.setAlignment(Pos.CENTER);
+                ButtonBox.setPadding(new Insets(10));
+                ButtonBox.setSpacing(10);
+
+
+                playButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().play());
+
+                pauseButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().pause());
+
+                resumeButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().resumeAudio());
+
+                restartButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().restart());
+
+                stopButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().stop());
+
+
+                vbox13.getChildren().addAll(  list , ButtonBox);
 
             }else{
                 Label error = new Label("No Songs with the name '" + textfield3.getText() +"' exists in the Music Library!" );
@@ -632,6 +704,15 @@ public class LibraryApplication extends Application {
             artst.setPadding(new Insets(30));
             artst.setAlignment(Pos.CENTER);
 
+            HBox albm = new HBox();
+            Label songAlbumLabel = new Label("Album: ");
+            songAlbumLabel.setTextFill(Color.web("F4EEFF"));
+            TextField songAlbum = new TextField();
+            albm.getChildren().addAll(songAlbumLabel, songAlbum);
+            albm.setSpacing(10);
+            albm.setPadding(new Insets(30));
+            albm.setAlignment(Pos.CENTER);
+
             HBox year = new HBox();
             Label songYearLabel = new Label("Year: ");
             songYearLabel.setTextFill(Color.web("F4EEFF"));
@@ -685,7 +766,7 @@ public class LibraryApplication extends Application {
             submit.setPadding(new Insets(30));
             submit.setAlignment(Pos.CENTER);
 
-            vbox14.getChildren().addAll( path, artst, year, lang, studio, length, feat, submit);
+            vbox14.getChildren().addAll( path, artst, albm, year, lang, studio, length, feat, submit);
 
             // create a scene
             Scene scene14 = new Scene(vbox14);
@@ -707,16 +788,24 @@ public class LibraryApplication extends Application {
 
             submitButton.setOnAction(actionEvent1 -> {
                 assert songArtist.getText() != null && songLang.getText() != null && songYear.getText() != null
-                        && songStudio.getText() != null && songLength.getText() != null && songPath.getText() != null;
+                        && songStudio.getText() != null && songLength.getText() != null && songPath.getText() != null
+                        && songAlbum.getText() != null;
 
                 Optional<Artist> a = MusicLibrary.getArtist(songArtist.getText());
+                Optional<HashSet<Album>> albums_set = MusicLibrary.getAlbum(songAlbum.getText());
 
-                if (a.isEmpty()){
+                if (a.isEmpty() || albums_set.isEmpty()){
                     Stage errorStage = new Stage();
                     VBox errorBox = new VBox();
                     errorBox.setPadding( new Insets(40) );
+                    Label error;
 
-                    Label error =  new Label(songArtist.getText() + " does not currently exist in the library. Please add the artist first.");
+                    if (a.isEmpty()){
+                        error =  new Label(songArtist.getText() + " does not currently exist in the library. Please add the artist first.");
+                    }else{
+                        error =  new Label(songAlbum.getText() + " does not currently exist in the library. Please add the album first.");
+
+                    }
 
                     errorBox.getChildren().add(error);
 
@@ -744,7 +833,21 @@ public class LibraryApplication extends Application {
 
                 }else{
 
-                    Song newSong = new Song( new File(songPath.getText()), a.get() , songName, parseInt(songYear.getText()), songLang.getText(), songStudio.getText(), parseLong(songLength.getText()));
+                    Album songsAlbum = null;
+
+                    for (Album al : albums_set.get()){
+                        if (al.getArtist().getName().equals(a.get().getName())){
+                            songsAlbum = al;
+                            break;
+                        }
+                    }
+
+                    if (songsAlbum == null){
+                        throw new IllegalArgumentException("No album with the artist as :" + a.get().getName()+ " was found in the music library!");
+                    }
+
+                    Song newSong = new Song( new File(songPath.getText()), a.get() , songsAlbum ,songName, parseInt(songYear.getText()), songLang.getText(), songStudio.getText(), parseLong(songLength.getText()));
+                    songsAlbum.addSong(newSong);
                     a.get().addSong(newSong);
 
                     if (!songCollabs.getText().isEmpty()) {

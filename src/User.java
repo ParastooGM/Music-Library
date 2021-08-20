@@ -6,13 +6,18 @@ import java.util.Objects;
 public class User {
 
     final private String name;
-    final private int age;
     final private List<Song> favorites = new ArrayList<>();
     final private List<PlayList> playLists = new ArrayList<>();
 
-    public User(String name, int age) {
+    public User(String name) {
         this.name = name;
-        this.age = age;
+    }
+
+    /**
+     * @return name of the user.
+     */
+    public String getName(){
+        return name;
     }
 
     /**
@@ -68,19 +73,18 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && name.equals(user.name);
+        return  name.equals(user.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, age);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
+                "name='" + name +
                 '}';
     }
 }

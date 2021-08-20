@@ -41,32 +41,38 @@ public class LibraryApplication extends Application {
         // set title for the stage
         stage.setTitle("Music Library");
 
+        //HashMap to store the users.
+        Map<String ,User> usersDB = new HashMap<>();
+
         VBox vbox = new VBox();
         vbox.setPadding( new Insets(40) );
 
         HBox artist = new HBox();
         HBox album = new HBox();
         HBox song = new HBox();
+        HBox user = new HBox();
 
         HBox artistLabel = new HBox();
         HBox albumLabel = new HBox();
         HBox songLabel = new HBox();
+        HBox userLabel = new HBox();
 
         List<Label> labels = new ArrayList<>();
         List<TextField> textFields = new ArrayList<>();
         List<Button> buttons = new ArrayList<>();
 
-        // create a label
-        Label labelArtist = new Label("Artist ");
+        // create labels
+        Label labelArtist = new Label("Artist");
         labels.add(labelArtist);
 
-        // create a label
-        Label labelSong = new Label("Song ");
+        Label labelSong = new Label("Song");
         labels.add(labelSong);
 
-        // create a label
-        Label labelAlbum = new Label("Album ");
+        Label labelAlbum = new Label("Album");
         labels.add(labelAlbum);
+
+        Label labelUser = new Label("User");
+        labels.add(labelUser);
 
         for (Label l : labels){
             l.setScaleX(1.7);
@@ -84,58 +90,74 @@ public class LibraryApplication extends Application {
         Background background_text = new Background(background_fill_text);
 
 
-        // create a text field to add an artist
+        //text field to add an artist
         TextField textfield1 = new TextField();
         textFields.add(textfield1);
 
-        // create a text field to add an album
+        //text field to add an album
         TextField textfield2 = new TextField();
         textFields.add(textfield2);
 
-        // create a text field to add a song
+        //text field to add a song
         TextField textfield3 = new TextField();
         textFields.add(textfield3);
 
-        // create a text field to search an artist
+        //text field to search an artist
         TextField textfield4 = new TextField();
         textFields.add(textfield4);
 
-        // create a text field to search an album
+        //text field to search an album
         TextField textfield5 = new TextField();
         textFields.add(textfield5);
 
-        // create a text field to search a song
+        //text field to search a song
         TextField textfield6 = new TextField();
         textFields.add(textfield6);
+
+        //text field to create a user
+        TextField textField7 = new TextField();
+        textFields.add(textField7);
+
+        //text field to access user account
+        TextField textField8 = new TextField();
+        textFields.add(textField8);
 
         for (TextField tf : textFields){
             tf.setScaleY(1.1);
             tf.setBackground(background_text);
         }
 
-        // create a button to search artist
+        //button to search artist
         Button button1 = new Button("Search");
         buttons.add(button1);
 
-        // create a button to search an album
+        //button to search an album
         Button button2 = new Button("Search");
         buttons.add(button2);
 
-        // create a button to search a song
+        //button to search a song
         Button button3 = new Button("Search");
         buttons.add(button3);
 
-        // create a button to add artist
+        //button to add artist
         Button button4 = new Button("Add");
         buttons.add(button4);
 
-        // create a button to add an album
+        //button to add an album
         Button button5 = new Button("Add");
         buttons.add(button5);
 
-        // create a button to add a song
+        //button to add a song
         Button button6 = new Button("Add");
         buttons.add(button6);
+
+        //button to create a user
+        Button button7 = new Button("Create");
+        buttons.add(button7);
+
+        //button to access a user account
+        Button button8 = new Button("Access");
+        buttons.add(button8);
 
         for (Button b : buttons){
             b.setStyle("-fx-font-size: 12px; -fx-background-color: #A6B1E1");
@@ -145,10 +167,12 @@ public class LibraryApplication extends Application {
         artist.getChildren().addAll(textfield1 , button1 , textfield4, button4);
         album.getChildren().addAll(textfield2 , button2 , textfield5, button5);
         song.getChildren().addAll(textfield3 , button3 , textfield6, button6);
+        user.getChildren().addAll(textField7, button7, textField8, button8 );
 
         artistLabel.getChildren().add(labelArtist);
         albumLabel.getChildren().add(labelAlbum);
         songLabel.getChildren().add(labelSong);
+        userLabel.getChildren().add(labelUser);
 
         album.setSpacing(10);
         album.setAlignment(Pos.CENTER);
@@ -159,6 +183,9 @@ public class LibraryApplication extends Application {
         song.setSpacing(10);
         song.setAlignment(Pos.CENTER);
         songLabel.setAlignment(Pos.CENTER);
+        user.setSpacing(10);
+        user.setAlignment(Pos.CENTER);
+        userLabel.setAlignment(Pos.CENTER);
 
         VBox.setMargin(artistLabel, new Insets(0.0d, 10.0d, 10.0d, 10.0d));
         VBox.setMargin(artist, new Insets(0.0d, 10.0d, 50.0d, 10.0d));
@@ -166,9 +193,11 @@ public class LibraryApplication extends Application {
         VBox.setMargin(album, new Insets(0.0d, 10.0d, 50.0d, 10.0d));
         VBox.setMargin(song, new Insets(0.0d, 10.0d, 50.0d, 10.0d));
         VBox.setMargin(songLabel, new Insets(0.0d, 10.0d, 10.0d, 10.0d));
+        VBox.setMargin(userLabel, new Insets(0.0d, 10.0d, 10.0d, 10.0d));
+        VBox.setMargin(user, new Insets(0.0d, 10.0d, 50.0d, 10.0d));
 
 
-        vbox.getChildren().addAll(artistLabel , artist , albumLabel , album,  songLabel , song);
+        vbox.getChildren().addAll(userLabel, user, artistLabel , artist , albumLabel , album,  songLabel , song);
 
 
         // create a scene
@@ -804,7 +833,6 @@ public class LibraryApplication extends Application {
                         error =  new Label(songArtist.getText() + " does not currently exist in the library. Please add the artist first.");
                     }else{
                         error =  new Label(songAlbum.getText() + " does not currently exist in the library. Please add the album first.");
-
                     }
 
                     errorBox.getChildren().add(error);
@@ -864,6 +892,54 @@ public class LibraryApplication extends Application {
 
 
             });
+        });
+
+        //create a user
+        button7.setOnAction(actionEvent -> {
+            assert textField7.getText() != null;
+
+            if (usersDB.get(textField7.getText()) != null){
+                textField7.setText("DUPLICATE USER! try again.");
+            }else{
+                User newUser = new User(textField7.getText());
+                usersDB.put(textField7.getText(), newUser);
+            }
+
+        });
+
+        //access a user account
+        button8.setOnAction(actionEvent -> {
+            assert textField8.getText() != null;
+            User foundUser = usersDB.get(textField8.getText());
+
+            if (foundUser == null){
+                textField8.setText("USER NOT FOUND!");
+            }else{
+               Stage userStage = new Stage();
+               userStage.setTitle(foundUser.getName());
+               VBox user_vbox = new VBox();
+
+               //ToDo
+                //set up playlists and favorites
+
+                // create a scene
+                Scene User_scene = new Scene(user_vbox);
+
+                // create a background fill
+                BackgroundFill background_fill14 = new BackgroundFill(Color.web("27496D"),
+                        CornerRadii.EMPTY, Insets.EMPTY);
+
+                // create Background
+                Background background14 = new Background(background_fill14);
+
+                // set background
+                user_vbox.setBackground(background14);
+
+                // set the scene
+                userStage.setScene(User_scene);
+
+                userStage.show();
+            }
         });
 
     }

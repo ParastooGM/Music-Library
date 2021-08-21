@@ -1,15 +1,17 @@
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class User {
 
     final private String name;
-    final private List<Song> favorites = new ArrayList<>();
-    final private List<PlayList> playLists = new ArrayList<>();
+    final private PlayList favorites = new PlayList("Favorites");
+    final private Map<String, PlayList> playLists = new HashMap<>();
 
+    /**
+     * Constructor.
+     * @param name the name of user.
+     */
     public User(String name) {
+        assert name!= null;
         this.name = name;
     }
 
@@ -21,16 +23,20 @@ public class User {
     }
 
     /**
-     * Adds a song to the favorites List.
+     * Adds a song to the favorites PlayList. If the song already exists in the playlist, nothing happens.
      * @param pSong the song to be added to the favorites.
      * @pre pSong != null
      */
     public void addToFavorites(Song pSong){
         assert pSong != null;
-        if (! favorites.contains(pSong)){
-            favorites.add(pSong);
-        }
 
+       Iterator<Song> iter = favorites.getSongs();
+       while(iter.hasNext()){
+           if (iter.next() == pSong){
+               return;
+           }
+       }
+            favorites.addSong(pSong);
     }
 
     /**
@@ -53,20 +59,47 @@ public class User {
      */
    public void addToMyPlayLists(PlayList playList){
         assert playList != null;
-        playLists.add(playList);
+        playLists.put(playList.getTitle(), playList);
    }
 
     /**
      * creates a playlist with the input title and adds it to the Users's playlists.
      * @param aName the name of the new playlist.
-     * @return the newly created playlist.
+     * @pre aName != null;
+     * @throws IllegalStateException if a playlist with the same name already exists in the library.
      */
-   public PlayList createPlayList(String aName){
+   public void createAndAddPlayList(String aName){
         assert aName != null;
-        PlayList newPlaList = new PlayList(aName);
-        playLists.add(newPlaList);
-        return newPlaList;
+        PlayList newPlayList = new PlayList(aName);
+        if (playLists.get(name) != null){
+            throw new IllegalArgumentException("A playList with the same name already exists in the library.");
+        }else{
+            playLists.put(newPlayList.getTitle(), newPlayList);
+        }
+
    }
+
+    /**
+     * @return an iterator on the user's playlists.
+     */
+   public Iterator<PlayList> getPlayLists(){
+       return playLists.values().iterator();
+   }
+
+    /**
+     * @return a list of playlists
+     */
+   public List<PlayList> getPlayListsList(){
+       return Collections.unmodifiableList((List<PlayList>) playLists.values());
+   }
+
+    /**
+     * @return  the favorites play list.
+     */
+   public PlayList getFavorites(){
+       return favorites;
+   }
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 public class PlayList extends SongList{
 
     public PlayList(String aTitle) {
@@ -12,6 +14,21 @@ public class PlayList extends SongList{
     public void rename(String aName){
         assert aName !=null;
         aTitle = aName;
+    }
+
+    /**
+     * Adds a whole album (all of its songs one by one) to a playlist.
+     * @param album the album to be added.
+     */
+    public void addAlbum (Album album){
+        Iterator<Song> iter = album.getSongs();
+        while (iter.hasNext()){
+            Song s = iter.next();
+            if (!aSongs.contains(s)){
+                addSong(s);
+            }
+
+        }
     }
 
     /**

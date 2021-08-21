@@ -1127,11 +1127,13 @@ public class LibraryApplication extends Application {
                PlayListBox.setSpacing(20);
 
                user_vbox.getChildren().add(PlayListBox);
-               user_vbox.setPrefHeight(400);
-               user_vbox.setPrefWidth(400);
+               VBox.setMargin(PlayListBox, new Insets(40.0d, 10.0d, 10.0d, 10.0d));
+               user_vbox.setPrefHeight(100);
+               user_vbox.setPrefWidth(300);
 
                newPlayListButton.setOnAction(actionEvent1 -> {
                     Stage newPLayList = new Stage();
+                    VBox vb = new VBox();
                     newPLayList.setTitle("New PlayList");
                     TextField tf = new TextField();
                     Label l = new Label("Name: ");
@@ -1140,6 +1142,11 @@ public class LibraryApplication extends Application {
                     hb.getChildren().addAll(l , tf, btn);
                     hb.setAlignment(Pos.CENTER);
                     hb.setSpacing(10);
+
+                    vb.getChildren().add(hb);
+                    VBox.setMargin(hb, new Insets(20.0d, 10.0d, 20.0d, 10.0d));
+                    vb.setPrefHeight(100);
+                    vb.setPrefWidth(300);
 
                     btn.setOnAction(actionEvent2 -> {
                         assert tf.getText() != null;
@@ -1151,7 +1158,7 @@ public class LibraryApplication extends Application {
                         }
                     });
                    // create a scene
-                   Scene scene14 = new Scene(hb);
+                   Scene scene14 = new Scene(vb);
 
                    // create a background fill
                    BackgroundFill background_fill14 = new BackgroundFill(Color.web("27496D"),
@@ -1161,7 +1168,7 @@ public class LibraryApplication extends Application {
                    Background background14 = new Background(background_fill14);
 
                    // set background
-                   hb.setBackground(background14);
+                   vb.setBackground(background14);
 
                    // set the scene
                    newPLayList.setScene(scene14);

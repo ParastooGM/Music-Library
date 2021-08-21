@@ -90,7 +90,11 @@ public class User {
      * @return a list of playlists
      */
    public List<PlayList> getPlayListsList(){
-       return Collections.unmodifiableList((List<PlayList>) playLists.values());
+       List l = new ArrayList();
+       for (PlayList pl : playLists.values()){
+           l.add(pl);
+       }
+       return Collections.unmodifiableList(l);
    }
 
     /**

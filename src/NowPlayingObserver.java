@@ -3,9 +3,17 @@ import java.util.Objects;
 public class NowPlayingObserver implements Observer{
 
     private final String aName;
+    private String msg = "";
 
     public NowPlayingObserver(String name){
         aName = name;
+    }
+
+    /**
+     * @return the message of the observer, i.e. the song that is currently playing.
+     */
+    public String getMsg(){
+        return msg;
     }
 
     @Override
@@ -30,10 +38,15 @@ public class NowPlayingObserver implements Observer{
     public void noticed(Song aSong) {
         assert aSong != null;
         if(aSong.getCollabs().size() != 0){
-            System.out.println("Now Playing " + aSong.getTitle() + " by " + aSong.getArtist() + ", and " + aSong.getCollabs());
+            msg =  "Now Playing " + aSong.getTitle() + " by " + aSong.getArtist() + ", and " + aSong.getCollabs();
         }else{
-            System.out.println("Now Playing " + aSong.getTitle() + " by " + aSong.getArtist());
+            msg =  "Now Playing " + aSong.getTitle() + " by " + aSong.getArtist();
         }
 
+    }
+
+    @Override
+    public String getName() {
+        return aName;
     }
 }

@@ -227,6 +227,7 @@ public class LibraryApplication extends Application {
 
         Library MusicLibrary = Library.Instance();
 
+
         //search an artist
         button1.setOnAction(actionEvent -> {
             assert textfield1.getText() != null;
@@ -266,6 +267,7 @@ public class LibraryApplication extends Application {
 
                 playButton.setOnAction(actionEvent1 -> {
                         assert list.getSelectionModel().getSelectedItem() != null;
+                    list.getSelectionModel().getSelectedItem();
                         list.getSelectionModel().getSelectedItem().play();});
 
                 pauseButton.setOnAction(actionEvent1 ->
@@ -850,6 +852,12 @@ public class LibraryApplication extends Application {
                 playButton.setOnAction(actionEvent1 ->
                 {
                     assert list.getSelectionModel().getSelectedItem() != null;
+                   for (Observer o :  list.getSelectionModel().getSelectedItem().getObservers()){
+                       if (o.getName().equals( "NowPlayingObserver")){
+                           String msg = ((NowPlayingObserver) o).getMsg();
+                           response.setTitle(msg);
+                       }
+                   }
                         list.getSelectionModel().getSelectedItem().play();});
 
                 pauseButton.setOnAction(actionEvent1 ->

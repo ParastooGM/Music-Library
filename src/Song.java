@@ -89,6 +89,13 @@ public class Song implements Listenable , Model, ToBeVisited{
         return this.status;
     }
 
+    /**
+     * @return the observers of the model.
+     */
+    protected Set<Observer> getObservers(){
+        return Collections.unmodifiableSet(aObservers);
+    }
+
 
     /**
      * Returns the audio format of the song. Songs can only be
@@ -188,7 +195,7 @@ public class Song implements Listenable , Model, ToBeVisited{
         }
 
         status = "play";
-        NowPlayingObserver observer = new NowPlayingObserver("Observer 1");
+        NowPlayingObserver observer = new NowPlayingObserver(" NowPlayingObserver");
         aObservers.add(observer);
 
         // Notifying the observers. In the current state, the Now Playing Observer is notified

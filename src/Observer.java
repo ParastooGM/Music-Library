@@ -11,4 +11,6 @@ public interface Observer {
      *          The current song being played.
      */
     void noticed(Song aSong);
+
+    String getName();
 }

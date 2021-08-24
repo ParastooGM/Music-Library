@@ -30,8 +30,8 @@ public class TotalArtistsVisitor extends AbstractVisitor{
     /***
      * @return the calculated results, i.e. the total number of artists.
      */
-    public HashSet<Artist> getTotalArtists(){
-        return (HashSet<Artist>) Collections.unmodifiableSet(artists);
+    public Set<Artist> getTotalArtists(){
+        return (Set<Artist>) Collections.unmodifiableSet(artists);
     }
 
 

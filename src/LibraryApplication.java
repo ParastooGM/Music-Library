@@ -9,10 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
@@ -23,7 +25,8 @@ import java.util.*;
 import java.util.List;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
-
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 public class LibraryApplication extends Application {
 
@@ -37,6 +40,7 @@ public class LibraryApplication extends Application {
 
     @Override
     public void start(Stage stage) {
+
 
         // set title for the stage
         stage.setTitle("Music Library");
@@ -260,15 +264,29 @@ public class LibraryApplication extends Application {
                 ButtonBox.setSpacing(10);
 
 
-                playButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().play());
+                playButton.setOnAction(actionEvent1 -> {
+                        assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().play();});
 
-                pauseButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().pause());
+                pauseButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().pause();});
 
-                resumeButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().resumeAudio());
+                resumeButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                    list.getSelectionModel().getSelectedItem().resumeAudio();});
 
-                restartButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().restart());
+                restartButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                    list.getSelectionModel().getSelectedItem().restart();});
 
-                stopButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().stop());
+                stopButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().stop();});
 
                 addToPlayList.setOnAction(actionEvent1 -> {
                             Stage s = new Stage();
@@ -276,13 +294,15 @@ public class LibraryApplication extends Application {
 
                             HBox userBox = new HBox();
                             Label userL = new Label("User: ");
+                            userL.setTextFill(Color.web("F4EEFF"));
                             TextField userTf = new TextField();
                             userBox.getChildren().addAll(userL , userTf);
                             userBox.setSpacing(10);
                             userBox.setAlignment(Pos.CENTER_LEFT);
 
                             HBox PLBox = new HBox();
-                            Label PLL = new Label("User: ");
+                            Label PLL = new Label("PlayList: ");
+                            PLL.setTextFill(Color.web("F4EEFF"));
                             TextField PLTf = new TextField();
                             PLBox.getChildren().addAll(PLL , PLTf);
                             PLBox.setSpacing(10);
@@ -294,7 +314,11 @@ public class LibraryApplication extends Application {
                             bBox.setAlignment(Pos.CENTER);
 
                             v.getChildren().addAll(userBox, PLBox, bBox);
-
+                            v.setSpacing(10);
+                            v.setPadding(new Insets(20));
+                            VBox.setMargin(bBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
+                            VBox.setMargin(PLBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
+                            VBox.setMargin(userBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
                             addButton.setOnAction(actionEvent4->{
                                 assert userTf.getText() != null && PLTf.getText() != null;
                                 User found = usersDB.get(userTf.getText());
@@ -306,6 +330,7 @@ public class LibraryApplication extends Application {
                                         }
                                     }
                                     if (foundPL != null){
+                                        assert list.getSelectionModel().getSelectedItem() != null;
                                         foundPL.addAlbum( list.getSelectionModel().getSelectedItem());
                                         PLTf.setText("ADDED SUCCESSFULLY!");
                                     }else{
@@ -491,15 +516,30 @@ public class LibraryApplication extends Application {
                 ButtonBox.setSpacing(10);
 
 
-                playButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().play());
+                playButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().play();});
 
-                pauseButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().pause());
+                pauseButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().pause();});
 
-                resumeButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().resumeAudio());
+                resumeButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().resumeAudio();});
 
-                restartButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().restart());
+                restartButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().restart();});
 
-                stopButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().stop());
+                stopButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().stop();});
 
                 addToPlayList.setOnAction(actionEvent1 -> {
                     Stage s = new Stage();
@@ -507,13 +547,15 @@ public class LibraryApplication extends Application {
 
                     HBox userBox = new HBox();
                     Label userL = new Label("User: ");
+                    userL.setTextFill(Color.web("F4EEFF"));
                     TextField userTf = new TextField();
                     userBox.getChildren().addAll(userL , userTf);
                     userBox.setSpacing(10);
                     userBox.setAlignment(Pos.CENTER_LEFT);
 
                     HBox PLBox = new HBox();
-                    Label PLL = new Label("User: ");
+                    Label PLL = new Label("Playlist: ");
+                    PLL.setTextFill(Color.web("F4EEFF"));
                     TextField PLTf = new TextField();
                     PLBox.getChildren().addAll(PLL , PLTf);
                     PLBox.setSpacing(10);
@@ -525,7 +567,11 @@ public class LibraryApplication extends Application {
                     bBox.setAlignment(Pos.CENTER);
 
                     v.getChildren().addAll(userBox, PLBox, bBox);
-
+                    v.setSpacing(10);
+                    v.setPadding(new Insets(20));
+                    VBox.setMargin(bBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
+                    VBox.setMargin(PLBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
+                    VBox.setMargin(userBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
                     addButton.setOnAction(actionEvent4->{
                         assert userTf.getText() != null && PLTf.getText() != null;
                         User found = usersDB.get(userTf.getText());
@@ -536,7 +582,9 @@ public class LibraryApplication extends Application {
                                     foundPL = pl;
                                 }
                             }
-                            if (foundPL != null){
+                            if (foundPL != null)
+                            {
+                                assert list.getSelectionModel().getSelectedItem() != null;
                                 foundPL.addAlbum( list.getSelectionModel().getSelectedItem());
                                 PLTf.setText("ADDED SUCCESSFULLY!");
                             }else{
@@ -725,7 +773,7 @@ public class LibraryApplication extends Application {
                             errorBox.setPadding( new Insets(40) );
 
                             Label error =  new Label(albumArtist.getText() + " does not currently exist in the library. Please add the artist first.");
-
+                            error.setTextFill(Color.web("F4EEFF"));
                             errorBox.getChildren().add(error);
 
                             // create a scene
@@ -799,15 +847,30 @@ public class LibraryApplication extends Application {
                 ButtonBox.setSpacing(10);
 
 
-                playButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().play());
+                playButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().play();});
 
-                pauseButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().pause());
+                pauseButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().pause();});
 
-                resumeButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().resumeAudio());
+                resumeButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().resumeAudio();});
 
-                restartButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().restart());
+                restartButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().restart();});
 
-                stopButton.setOnAction(actionEvent1 -> list.getSelectionModel().getSelectedItem().stop());
+                stopButton.setOnAction(actionEvent1 ->
+                {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                        list.getSelectionModel().getSelectedItem().stop();});
 
                 addToPlayList.setOnAction(actionEvent1 -> {
                     Stage s = new Stage();
@@ -815,13 +878,15 @@ public class LibraryApplication extends Application {
 
                     HBox userBox = new HBox();
                     Label userL = new Label("User: ");
+                    userL.setTextFill(Color.web("F4EEFF"));
                     TextField userTf = new TextField();
                     userBox.getChildren().addAll(userL , userTf);
                     userBox.setSpacing(10);
                     userBox.setAlignment(Pos.CENTER_LEFT);
 
                     HBox PLBox = new HBox();
-                    Label PLL = new Label("User: ");
+                    Label PLL = new Label("Playlist: ");
+                    PLL.setTextFill(Color.web("F4EEFF"));
                     TextField PLTf = new TextField();
                     PLBox.getChildren().addAll(PLL , PLTf);
                     PLBox.setSpacing(10);
@@ -833,7 +898,11 @@ public class LibraryApplication extends Application {
                     bBox.setAlignment(Pos.CENTER);
 
                     v.getChildren().addAll(userBox, PLBox, bBox);
-
+                    v.setSpacing(10);
+                    v.setPadding(new Insets(20));
+                    VBox.setMargin(bBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
+                    VBox.setMargin(PLBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
+                    VBox.setMargin(userBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
                     addButton.setOnAction(actionEvent4->{
                         assert userTf.getText() != null && PLTf.getText() != null;
                         User found = usersDB.get(userTf.getText());
@@ -845,6 +914,7 @@ public class LibraryApplication extends Application {
                                 }
                             }
                             if (foundPL != null){
+                                assert list.getSelectionModel().getSelectedItem() != null;
                                 foundPL.addSong( list.getSelectionModel().getSelectedItem());
                                 PLTf.setText("ADDED SUCCESSFULLY!");
                             }else{
@@ -1030,10 +1100,11 @@ public class LibraryApplication extends Application {
 
                     if (a.isEmpty()){
                         error =  new Label(songArtist.getText() + " does not currently exist in the library. Please add the artist first.");
+
                     }else{
                         error =  new Label(songAlbum.getText() + " does not currently exist in the library. Please add the album first.");
                     }
-
+                    error.setTextFill(Color.web("F4EEFF"));
                     errorBox.getChildren().add(error);
 
                     // create a scene
@@ -1107,6 +1178,8 @@ public class LibraryApplication extends Application {
 
         });
 
+
+
         //access a user account
         button8.setOnAction(actionEvent -> {
             assert textField8.getText() != null;
@@ -1137,6 +1210,7 @@ public class LibraryApplication extends Application {
                     newPLayList.setTitle("New PlayList");
                     TextField tf = new TextField();
                     Label l = new Label("Name: ");
+                    l.setTextFill(Color.web("F4EEFF"));
                     Button btn = new Button("Create");
                     HBox hb = new HBox();
                     hb.getChildren().addAll(l , tf, btn);
@@ -1202,22 +1276,95 @@ public class LibraryApplication extends Application {
                    Button resumeButton = new Button("Resume");
                    Button restartButton = new Button("Restart");
                    Button stopButton = new Button("Stop");
-                   ButtonBox.getChildren().addAll(playButton, pauseButton, resumeButton, restartButton, stopButton);
+                   Button getInfoButton = new Button("Get Info");
+                   ButtonBox.getChildren().addAll(playButton, pauseButton, resumeButton, restartButton, stopButton, getInfoButton);
 
                    ButtonBox.setAlignment(Pos.CENTER);
                    ButtonBox.setPadding(new Insets(10));
                    ButtonBox.setSpacing(10);
 
 
-                   playButton.setOnAction(actionEvent3 -> list.getSelectionModel().getSelectedItem().play());
+                   playButton.setOnAction(actionEvent3 ->
+                   {
+                       assert list.getSelectionModel().getSelectedItem() != null;
+                       list.getSelectionModel().getSelectedItem().play();});
 
-                   pauseButton.setOnAction(actionEvent3 -> list.getSelectionModel().getSelectedItem().pause());
+                   pauseButton.setOnAction(actionEvent3 ->
+                   {
+                       assert list.getSelectionModel().getSelectedItem() != null;
+                           list.getSelectionModel().getSelectedItem().pause();});
 
-                   resumeButton.setOnAction(actionEvent3 -> list.getSelectionModel().getSelectedItem().resumeAudio());
+                   resumeButton.setOnAction(actionEvent3 ->
+                   {
+                       assert list.getSelectionModel().getSelectedItem() != null;
+                           list.getSelectionModel().getSelectedItem().resumeAudio();});
 
-                   restartButton.setOnAction(actionEvent3 -> list.getSelectionModel().getSelectedItem().restart());
+                   restartButton.setOnAction(actionEvent3 ->
+                   {
+                       assert list.getSelectionModel().getSelectedItem() != null;
+                       list.getSelectionModel().getSelectedItem().restart();});
 
-                   stopButton.setOnAction(actionEvent3 -> list.getSelectionModel().getSelectedItem().stop());
+                   stopButton.setOnAction(actionEvent3 ->
+                   {
+                       assert list.getSelectionModel().getSelectedItem() != null;
+                           list.getSelectionModel().getSelectedItem().stop();});
+
+                   getInfoButton.setOnAction(actionEvent3 ->{
+                       Stage infoStage = new Stage();
+                       infoStage.setTitle(list.getSelectionModel().getSelectedItem().getTitle());
+                        VBox vb = new VBox();
+                       TableView table = new TableView();
+
+                       final Label label = new Label("PlayList Information");
+                       label.setFont(new Font("Arial", 20));
+                       label.setTextFill(Color.web("F4EEFF"));
+
+                       TableColumn firstCol = new TableColumn(" Total Artists ");
+                       TableColumn lastCol = new TableColumn(" Total length ");
+
+
+                       TotalArtistsVisitor artistsVisitor = new TotalArtistsVisitor();
+                       TotalLengthVisitor lengthVisitor = new TotalLengthVisitor();
+                       assert list.getSelectionModel().getSelectedItem() != null;
+                       list.getSelectionModel().getSelectedItem().acceptVisitor(artistsVisitor);
+                       list.getSelectionModel().getSelectedItem().acceptVisitor(lengthVisitor);
+
+
+
+                       final ObservableList<DataOBJ> data = FXCollections.observableArrayList(new DataOBJ(String.valueOf(lengthVisitor.getTotalLength()), artistsVisitor.getTotalArtists().toString()));
+                       lastCol.setCellValueFactory(
+                               new PropertyValueFactory<DataOBJ,String>("length")
+                       );
+                       firstCol.setCellValueFactory(
+                               new PropertyValueFactory<DataOBJ,String>("artists")
+                       );
+
+                       table.setItems(data);
+                       table.getColumns().addAll(firstCol, lastCol);
+                       table.setFixedCellSize(60);
+
+                       vb.getChildren().addAll(label, table);
+                       vb.setSpacing(5);
+                       vb.setPadding(new Insets(10, 0, 0, 10));
+
+                       // create a scene
+                       Scene scene13 = new Scene(vb);
+
+                       // create a background fill
+                       BackgroundFill background_fill13 = new BackgroundFill(Color.web("27496D"),
+                               CornerRadii.EMPTY, Insets.EMPTY);
+
+                       // create Background
+                       Background background13 = new Background(background_fill13);
+
+                       // set background
+                       vb.setBackground(background13);
+
+                       // set the scene
+                       infoStage.setScene(scene13);
+
+                       infoStage.show();
+                   });
 
 
                    vbox13.getChildren().addAll(  list , ButtonBox);

@@ -1,9 +1,11 @@
-
 import javafx.scene.image.Image;
-
 import java.util.Iterator;
 import java.util.Objects;
 
+/**
+ * An Album object is an aggregation of song Objects.
+ * Extends the songList Abstract class.
+ */
 public class Album extends SongList {
 
     final private Artist aArtist;
@@ -13,8 +15,11 @@ public class Album extends SongList {
     final private Image aCover;
 
 
+    //Constructor
     public Album(Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio, Image cover) {
         super(aTitle);
+        assert aArtist != null & cover != null & aLanguage != null & aStudio != null;
+
         this.aArtist = aArtist;
         this.aYear = aYear;
         this.aLanguage = aLanguage;
@@ -22,6 +27,7 @@ public class Album extends SongList {
         this.aCover = cover;
     }
 
+    //Getter methods
     /**
      * @return the artist of the album.
      */
@@ -57,6 +63,8 @@ public class Album extends SongList {
         return aCover;
     }
 
+
+    //Other Class Methods
     /**
      * adds this Album to a playlist.
      * @param pPlaylist the playlist to add the album to.
@@ -64,12 +72,14 @@ public class Album extends SongList {
      */
     public void addToPlayList(PlayList pPlaylist){
         assert pPlaylist != null;
-        Iterator<Song> iter = getSongs();
-        while (iter.hasNext()){
-            pPlaylist.addSong(iter.next());
+        Iterator<Song> iterator = getSongs();
+        while (iterator.hasNext()){
+            pPlaylist.addSong(iterator.next());
         }
     }
 
+
+    //Overridden methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

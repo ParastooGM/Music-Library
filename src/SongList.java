@@ -82,6 +82,15 @@ public abstract class SongList implements Listenable, ToBeVisited {
         return aSongs.get(currentSongNum);
     }
 
+
+    /**
+     * @return a list of the songs of the songList.
+     */
+    public List<Song> getSongList(){
+        return Collections.unmodifiableList(aSongs);
+    }
+
+
     /**
      * @return the next song in the songList.
      * Will restart from the beginning of the list.

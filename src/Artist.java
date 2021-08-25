@@ -1,8 +1,10 @@
 import javafx.scene.image.Image;
-
 import java.util.*;
 import java.util.List;
 
+/**
+ * An Artist Object has Songs and Albums.
+ */
 public class Artist {
 
     final private String aName;
@@ -21,6 +23,7 @@ public class Artist {
     }
 
 
+    //Getter methods
     /**
      * @return the name of the Artist.
      */
@@ -73,6 +76,7 @@ public class Artist {
         return Collections.unmodifiableList(aSongs).listIterator();
     }
 
+    //Other class methods
     /**
      * Adds an album to the artist's discography.
      * @param pAlbum the album to be added.
@@ -127,6 +131,7 @@ public class Artist {
 
 
 
+    //Overridden methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -138,5 +143,12 @@ public class Artist {
     @Override
     public int hashCode() {
         return Objects.hash(aName);
+    }
+
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "aName='" + aName + '\'' +
+                '}';
     }
 }

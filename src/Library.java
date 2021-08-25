@@ -1,5 +1,8 @@
 import java.util.*;
 
+/**
+ * Music Library Object containing Artists, Songs and Albums.
+ */
 public class Library {
 
     final private Map<String, HashSet<Song>> aSongs = new HashMap<>();
@@ -13,6 +16,7 @@ public class Library {
      */
     private Library() {}
 
+    //Getter and Setter methods.
     /**
      * @return the single library instance.
      */
@@ -71,6 +75,49 @@ public class Library {
     }
 
     /**
+     * Retrieves a list of songs with the parameter title from the database; used in searching.
+     * @param title the string / key with which the songs list will be retrieved.
+     * @return The optional of the retrieved songs list or an Optional.empty object.
+     */
+    public Optional<HashSet<Song>> getSong(String title ){
+        if (aSongs.containsKey(title)){
+            return Optional.of(aSongs.get(title));
+        }else{
+            return Optional.empty();
+        }
+
+    }
+
+
+    /**
+     * Retrieves a list of albums with the parameter title from the database; used in searching.
+     * @param title the string / key with which the albums list will be retrieved.
+     * @return The optional of the retrieved albums list or an Optional.empty object.
+     */
+    public Optional<HashSet<Album>> getAlbum(String title ){
+        if (aAlbums.containsKey(title)){
+            return Optional.of(aAlbums.get(title));
+        }else{
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Retrieves an artist object with their name from the database; used in searching.
+     * @param name the string / key with which the artist object will be retrieved.
+     * @return The optional of the retrieved artist or an Optional.empty object.
+     */
+    public Optional<Artist> getArtist(String name){
+        if (aArtists.containsKey(name)){
+            return Optional.of(aArtists.get(name));
+        }else {
+            return Optional.empty();
+        }
+    }
+
+
+    //Other Class Methods
+    /**
      * Adds an Artist with their songs and albums to the library. If an artist with the same name is already in the database,
      * the new artist will replace it.
      * @param pArtist the artist to be added.
@@ -124,56 +171,15 @@ public class Library {
         assert pArtist != null;
         if (aArtists.get(pArtist.getName()) != null) {
             aArtists.remove(pArtist.getName());
-            Iterator<Album> iter = pArtist.getAlbums();
-            while (iter.hasNext()) {
-                Album albm = iter.next();
-                aAlbums.remove(albm);
-                Iterator<Song> iter_song = albm.getSongs();
-                while (iter_song.hasNext()) {
-                    aSongs.remove(iter_song.next());
+            Iterator<Album> iterator = pArtist.getAlbums();
+            while (iterator.hasNext()) {
+                Album album = iterator.next();
+                aAlbums.get(album.getTitle()).removeIf(element -> (element.getArtist() == pArtist));
+                Iterator<Song> iterator_song = album.getSongs();
+                while (iterator_song.hasNext()) {
+                    aSongs.get(iterator_song.next().getTitle()).removeIf(element -> element.getArtist() == pArtist);
                 }
             }
-        }
-    }
-
-    /**
-     * Retrieves a list of songs with the parameter title from the database; used in searching.
-     * @param title the string / key with which the songs list will be retrieved.
-     * @return The optional of the retrieved songs list or an Optional.empty object.
-     */
-    public Optional<HashSet<Song>> getSong(String title ){
-        if (aSongs.containsKey(title)){
-            return Optional.of(aSongs.get(title));
-        }else{
-            return Optional.empty();
-        }
-
-    }
-
-
-    /**
-     * Retrieves a list of albums with the parameter title from the database; used in searching.
-     * @param title the string / key with which the albums list will be retrieved.
-     * @return The optional of the retrieved albums list or an Optional.empty object.
-     */
-    public Optional<HashSet<Album>> getAlbum(String title ){
-        if (aAlbums.containsKey(title)){
-            return Optional.of(aAlbums.get(title));
-        }else{
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Retrieves an artist object with their name from the database; used in searching.
-     * @param name the string / key with which the artist object will be retrieved.
-     * @return The optional of the retrieved artist or an Optional.empty object.
-     */
-    public Optional<Artist> getArtist(String name){
-        if (aArtists.containsKey(name)){
-            return Optional.of(aArtists.get(name));
-        }else {
-            return Optional.empty();
         }
     }
 

@@ -1,6 +1,4 @@
-import javafx.scene.image.Image;
 import org.junit.Test;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -9,8 +7,7 @@ import static org.junit.Assert.*;
 public class TestArtist {
 
     Artist a = new Artist("Test");
-    Image img = new Image("C:\\Users\\paras\\OneDrive\\Desktop\\Docs\\Images\\clocks_1.png");
-    Album album = new Album(a, "TestAlbum", 2020, "English", "Studio", img );
+    Album album = new Album(a, "TestAlbum", 2020, "English", "Studio", null );
     Song song = new Song(new File("C:\\Users\\paras\\OneDrive\\Desktop\\Docs\\park.mp3"), a, album, "TestSong", 2021, "English", "Studio", 3);
 
     @Test

@@ -18,7 +18,7 @@ public class Album extends SongList {
     //Constructor
     public Album(Artist aArtist, String aTitle, int aYear, String aLanguage, String aStudio, Image cover) {
         super(aTitle);
-        assert aArtist != null & cover != null & aLanguage != null & aStudio != null;
+        assert aArtist != null & aLanguage != null & aStudio != null;
 
         this.aArtist = aArtist;
         this.aYear = aYear;

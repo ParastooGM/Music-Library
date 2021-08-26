@@ -25,6 +25,7 @@ public class Song implements Listenable , Model, ToBeVisited{
     private MediaPlayer mediaPlayer;
     private Duration currentTime;
 
+    //Constructor
     public Song(File path, Artist aArtist,Album album ,String aTitle, int aYear, String aLanguage, String aStudio, long aLength) {
         assert path.exists() && aArtist!= null && album != null;
 
@@ -38,23 +39,8 @@ public class Song implements Listenable , Model, ToBeVisited{
         this.aAlbum = album;
     }
 
-    /**
-     * adds a collaborating artist to the song.
-     * @param pArtist the collaborating artist to be added on the song.
-     * @pre pArtist != null; pArtist != aArtist;
-     */
-    public void addCollab(Artist pArtist){
-        assert pArtist != null;
-        assert pArtist != aArtist;
 
-        if(aCollabs.isEmpty()){
-            ArrayList<Artist> newCollabs = new ArrayList<>();
-            newCollabs.add(pArtist);
-            aCollabs = Optional.of(newCollabs);
-        } else if ( !aCollabs.get().contains(pArtist)){
-            aCollabs.get().add(pArtist);
-        }
-    }
+    //Getter methods
 
     /**
      * @return collaborating artists of the song.
@@ -156,6 +142,25 @@ public class Song implements Listenable , Model, ToBeVisited{
         return aPath;
     }
 
+    //Other class methods
+    /**
+     * adds a collaborating artist to the song.
+     * @param pArtist the collaborating artist to be added on the song.
+     * @pre pArtist != null; pArtist != aArtist;
+     */
+    public void addCollab(Artist pArtist){
+        assert pArtist != null;
+        assert pArtist != aArtist;
+
+        if(aCollabs.isEmpty()){
+            ArrayList<Artist> newCollabs = new ArrayList<>();
+            newCollabs.add(pArtist);
+            aCollabs = Optional.of(newCollabs);
+        } else if ( !aCollabs.get().contains(pArtist)){
+            aCollabs.get().add(pArtist);
+        }
+    }
+
     /**
      * adds this song to a playlist.
      * @param pPlayList the playlist to add the song to.
@@ -165,6 +170,8 @@ public class Song implements Listenable , Model, ToBeVisited{
         assert pPlayList != null;
         pPlayList.addSong(this);
     }
+
+    // Interface Overridden Methods
     /**
      * Method from the Listenable interface.
      * Plays the audio file of the song.
@@ -343,6 +350,7 @@ public class Song implements Listenable , Model, ToBeVisited{
         v.VisitSong(this);
     }
 
+    //Other Overridden methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

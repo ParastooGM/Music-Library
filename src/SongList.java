@@ -18,21 +18,7 @@ public abstract class SongList implements Listenable, ToBeVisited {
         this.aTitle = pTitle;
     }
 
-    /**
-     * Adds a Song to the SongList without duplicates. This is also
-     * where the numSongs variable and aLength Variable get updated.
-     * @param pSong the Song to be added
-     * @pre pSong != null
-     */
-    public void addSong(Song pSong){
-            assert pSong != null;
-            if (! aSongs.contains(pSong)) {
-                aSongs.add(pSong);
-                numSongs++;
-                aLength += pSong.getLength();
-            }
-      }
-
+    //Getter methods
     /**
      * @return the title of the SongList.
      */
@@ -61,6 +47,61 @@ public abstract class SongList implements Listenable, ToBeVisited {
         return aLength;
     }
 
+
+    /**
+     * @return a list of the songs of the songList.
+     */
+    public List<Song> getSongList(){
+        return Collections.unmodifiableList(aSongs);
+    }
+
+    /**
+     * @return the current song in the songList.
+     */
+    public Song getCurrentSong(){
+        return aSongs.get(currentSongNum);
+    }
+
+    /**
+     * @return the next song in the songList.
+     * Will restart from the beginning of the list.
+     */
+    public Song getNextSong(){
+        if (currentSongNum == aSongs.size() -1){
+            currentSongNum = -1;
+        }
+        currentSongNum++;
+        return aSongs.get(currentSongNum);
+    }
+
+
+    /**
+     * @return the previous song on the SongList
+     * @throws IllegalStateException when the current song is the first song in the list.
+     */
+    public Song getPreviousSong() throws IllegalStateException{
+        if (currentSongNum == 0 ){
+            throw new IllegalStateException("This is the first song in the list.");
+        }
+        currentSongNum--;
+        return aSongs.get(currentSongNum);
+    }
+
+    //Other Class Methods
+    /**
+     * Adds a Song to the SongList without duplicates. This is also
+     * where the numSongs variable and aLength Variable get updated.
+     * @param pSong the Song to be added
+     * @pre pSong != null
+     */
+    public void addSong(Song pSong){
+        assert pSong != null;
+        if (! aSongs.contains(pSong)) {
+            aSongs.add(pSong);
+            numSongs++;
+            aLength += pSong.getLength();
+        }
+    }
     /**
      * Plays the songs on the songList in a random order.
      */
@@ -75,46 +116,7 @@ public abstract class SongList implements Listenable, ToBeVisited {
 
     }
 
-    /**
-     * @return the current song in the songList.
-     */
-    public Song currentSong(){
-        return aSongs.get(currentSongNum);
-    }
-
-
-    /**
-     * @return a list of the songs of the songList.
-     */
-    public List<Song> getSongList(){
-        return Collections.unmodifiableList(aSongs);
-    }
-
-
-    /**
-     * @return the next song in the songList.
-     * Will restart from the beginning of the list.
-     */
-    public Song NextSong(){
-        if (currentSongNum == aSongs.size() -1){
-            currentSongNum = -1;
-        }
-        currentSongNum++;
-        return aSongs.get(currentSongNum);
-    }
-
-
-    /**
-     * @return the previous song on the SongList
-     * @throws IllegalStateException when the current song is the first song in the list.
-     */
-    public Song PreviousSong() throws IllegalStateException{
-        if (currentSongNum == 0 ){
-            throw new IllegalStateException("This is the first song in the list.");
-        }
-        currentSongNum--;
-        return aSongs.get(currentSongNum);
-    }
+    //Interface overridden methods
 
     /**
      * Method from the Listenable interface.
@@ -169,6 +171,7 @@ public abstract class SongList implements Listenable, ToBeVisited {
         v.VisitSongList(this);
     }
 
+    //other overridden methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

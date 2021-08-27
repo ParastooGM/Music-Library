@@ -1,39 +1,32 @@
-import java.util.Iterator;
+import org.junit.Test;
 
-public class TestTotalLengthVisitor implements Visitor{
+import java.io.File;
 
-    private long totalLength = 0;
+import static org.junit.Assert.assertEquals;
+
+public class TestTotalLengthVisitor {
+
+    TotalLengthVisitor visitor = new TotalLengthVisitor();
+    SongList sl = new PlayList("Test");
+    Artist a = new Artist("Test");
+    Album album = new Album(a, "TestAlbum", 2020, "English", "Studio", null );
+    Song song = new Song(new File("C:\\Users\\paras\\OneDrive\\Desktop\\Docs\\park.mp3"), a, album, "TestSong", 2021, "English", "Studio", 3);
+    Song song1 = new Song(new File("C:\\Users\\paras\\OneDrive\\Desktop\\Docs\\park.mp3"), a, album, "TestSong1", 2021, "English", "Studio", 2);
 
 
-    /**
-     * @return the total length calculated by the visitor.
-     */
-    public long getTotalLength(){
-        return totalLength;
+
+    @Test
+    public void TestTotalLengthSongList(){
+        sl.addSong(song);
+        sl.addSong(song1);
+        sl.acceptVisitor(visitor);
+        assertEquals(visitor.getTotalLength(), 5);
     }
 
-
-    /**
-     * Callback to TotalLength concrete visitor to visit a SongList and calculate its length.
-     * @param aSongList SongList to be visited.
-     */
-    @Override
-    public void VisitSongList(SongList aSongList) {
-        assert aSongList != null;
-
-        Iterator<Song> iterator = aSongList.getSongs();
-        while(iterator.hasNext()){
-            totalLength += iterator.next().getLength();
-        }
+    @Test
+    public void TestTotalLengthSong(){
+        song.acceptVisitor(visitor);
+        assertEquals(visitor.getTotalLength(), 3);
     }
 
-    /**
-     *  Callback to TotalLength concrete visitor to visit a Song and calculate its length.
-     * @param aSong Song to be visited.
-     */
-    @Override
-    public void VisitSong(Song aSong) {
-        assert aSong != null;
-        totalLength += aSong.getLength();
-    }
 }

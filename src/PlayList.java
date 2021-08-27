@@ -1,11 +1,18 @@
 import java.util.Iterator;
 
+/**
+ * A Playlist object is an aggregation of song Objects.
+ * Extends the songList Abstract class.
+ */
 public class PlayList extends SongList{
 
+    //Constructor
     public PlayList(String aTitle) {
         super(aTitle);
     }
 
+
+    //Class methods
     /**
      * Renames a playlist after its creation.
      * @param aName the new name of the playlist.

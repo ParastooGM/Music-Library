@@ -15,6 +15,7 @@ public class User {
         this.name = name;
     }
 
+    //Getter methods
     /**
      * @return name of the user.
      */
@@ -23,6 +24,29 @@ public class User {
     }
 
     /**
+     * @return an iterator on the user's playlists.
+     */
+    public Iterator<PlayList> getPlayLists(){
+        return playLists.values().iterator();
+    }
+
+    /**
+     * @return a list of playlists
+     */
+    public List<PlayList> getPlayListsList(){
+        List<PlayList> l = new ArrayList<>(playLists.values());
+        return Collections.unmodifiableList(l);
+    }
+
+    /**
+     * @return  the favorites play list.
+     */
+    public PlayList getFavorites(){
+        return favorites;
+    }
+
+    //Other class methods
+    /**
      * Adds a song to the favorites PlayList. If the song already exists in the playlist, nothing happens.
      * @param pSong the song to be added to the favorites.
      * @pre pSong != null
@@ -30,13 +54,9 @@ public class User {
     public void addToFavorites(Song pSong){
         assert pSong != null;
 
-       Iterator<Song> iter = favorites.getSongs();
-       while(iter.hasNext()){
-           if (iter.next() == pSong){
-               return;
-           }
-       }
-            favorites.addSong(pSong);
+     if (!favorites.getSongList().contains(pSong)){
+         favorites.addSong(pSong);
+     }
     }
 
     /**
@@ -79,29 +99,9 @@ public class User {
 
    }
 
-    /**
-     * @return an iterator on the user's playlists.
-     */
-   public Iterator<PlayList> getPlayLists(){
-       return playLists.values().iterator();
-   }
-
-    /**
-     * @return a list of playlists
-     */
-   public List<PlayList> getPlayListsList(){
-       List<PlayList> l = new ArrayList<>(playLists.values());
-       return Collections.unmodifiableList(l);
-   }
-
-    /**
-     * @return  the favorites play list.
-     */
-   public PlayList getFavorites(){
-       return favorites;
-   }
 
 
+    //Overridden methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

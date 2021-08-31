@@ -86,12 +86,12 @@ public class Album extends SongList {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Album album = (Album) o;
-        return aYear == album.aYear && aArtist.equals(album.aArtist) && aLanguage.equals(album.aLanguage) && aStudio.equals(album.aStudio) && aCover.equals(album.aCover);
+        return aArtist.equals(album.aArtist);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), aArtist, aYear, aLanguage, aStudio, aCover);
+        return Objects.hash(super.hashCode(), aArtist);
     }
 
     @Override

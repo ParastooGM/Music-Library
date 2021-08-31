@@ -5,10 +5,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 import javafx.scene.control.TableColumn;
@@ -41,13 +37,13 @@ public class LibraryApplication extends Application {
     @Override
     public void start(Stage stage) {
 
-
-        // set title for the stage
+        // set title for the Music Library Home Page
         stage.setTitle("Music Library");
 
         //HashMap to store the users.
         Map<String ,User> usersDB = new HashMap<>();
 
+        //Designing the home stage
         VBox vbox = new VBox();
         vbox.setPadding( new Insets(40) );
 
@@ -78,6 +74,7 @@ public class LibraryApplication extends Application {
         Label labelUser = new Label("User");
         labels.add(labelUser);
 
+        //Styling Labels
         for (Label l : labels){
             l.setScaleX(1.7);
             l.setScaleY(1.7);
@@ -85,38 +82,36 @@ public class LibraryApplication extends Application {
             l.setTextFill(Color.web("F4EEFF"));
         }
 
-
-        // create a background fill
+        //Creating a background fill
         BackgroundFill background_fill_text = new BackgroundFill(Color.web("F4EEFF"),
                 CornerRadii.EMPTY, Insets.EMPTY);
 
         // create Background
         Background background_text = new Background(background_fill_text);
 
-
         //text field to add an artist
-        TextField textfield1 = new TextField();
-        textFields.add(textfield1);
+        TextField textField1 = new TextField();
+        textFields.add(textField1);
 
         //text field to add an album
-        TextField textfield2 = new TextField();
-        textFields.add(textfield2);
+        TextField textField2 = new TextField();
+        textFields.add(textField2);
 
         //text field to add a song
-        TextField textfield3 = new TextField();
-        textFields.add(textfield3);
+        TextField textField3 = new TextField();
+        textFields.add(textField3);
 
         //text field to search an artist
-        TextField textfield4 = new TextField();
-        textFields.add(textfield4);
+        TextField textField4 = new TextField();
+        textFields.add(textField4);
 
         //text field to search an album
-        TextField textfield5 = new TextField();
-        textFields.add(textfield5);
+        TextField textField5 = new TextField();
+        textFields.add(textField5);
 
         //text field to search a song
-        TextField textfield6 = new TextField();
-        textFields.add(textfield6);
+        TextField textField6 = new TextField();
+        textFields.add(textField6);
 
         //text field to create a user
         TextField textField7 = new TextField();
@@ -126,6 +121,7 @@ public class LibraryApplication extends Application {
         TextField textField8 = new TextField();
         textFields.add(textField8);
 
+        //Styling textFields.
         for (TextField tf : textFields){
             tf.setScaleY(1.1);
             tf.setBackground(background_text);
@@ -163,14 +159,14 @@ public class LibraryApplication extends Application {
         Button button8 = new Button("Access");
         buttons.add(button8);
 
+        //Styling Buttons.
         for (Button b : buttons){
             b.setStyle("-fx-font-size: 12px; -fx-background-color: #A6B1E1");
         }
 
-
-        artist.getChildren().addAll(textfield1 , button1 , textfield4, button4);
-        album.getChildren().addAll(textfield2 , button2 , textfield5, button5);
-        song.getChildren().addAll(textfield3 , button3 , textfield6, button6);
+        artist.getChildren().addAll(textField1 , button1 , textField4, button4);
+        album.getChildren().addAll(textField2 , button2 , textField5, button5);
+        song.getChildren().addAll(textField3 , button3 , textField6, button6);
         user.getChildren().addAll(textField7, button7, textField8, button8 );
 
         artistLabel.getChildren().add(labelArtist);
@@ -199,10 +195,16 @@ public class LibraryApplication extends Application {
         VBox.setMargin(songLabel, new Insets(0.0d, 10.0d, 10.0d, 10.0d));
         VBox.setMargin(userLabel, new Insets(0.0d, 10.0d, 10.0d, 10.0d));
         VBox.setMargin(user, new Insets(0.0d, 10.0d, 50.0d, 10.0d));
-
+        VBox.setVgrow(artist, Priority.ALWAYS);
+        VBox.setVgrow(artistLabel, Priority.ALWAYS);
+        VBox.setVgrow(album, Priority.ALWAYS);
+        VBox.setVgrow(albumLabel, Priority.ALWAYS);
+        VBox.setVgrow(song, Priority.ALWAYS);
+        VBox.setVgrow(songLabel, Priority.ALWAYS);
+        VBox.setVgrow(user, Priority.ALWAYS);
+        VBox.setVgrow(userLabel, Priority.ALWAYS);
 
         vbox.getChildren().addAll(userLabel, user, artistLabel , artist , albumLabel , album,  songLabel , song);
-
 
         // create a scene
         Scene scene = new Scene(vbox);
@@ -210,16 +212,10 @@ public class LibraryApplication extends Application {
         // create a background fill
         BackgroundFill background_fill = new BackgroundFill(Color.web("27496D"),
                 CornerRadii.EMPTY, Insets.EMPTY);
-
-        // create Background
         Background background = new Background(background_fill);
 
-        // set background
         vbox.setBackground(background);
-
-        // set the scene
         stage.setScene(scene);
-
         stage.show();
 
 
@@ -227,11 +223,10 @@ public class LibraryApplication extends Application {
 
         Library MusicLibrary = Library.Instance();
 
-
         //search an artist
         button1.setOnAction(actionEvent -> {
-            assert textfield1.getText() != null;
-            Optional<Artist> foundArtist = MusicLibrary.getArtist(textfield1.getText());
+            assert textField1.getText() != null;
+            Optional<Artist> foundArtist = MusicLibrary.getArtist(textField1.getText());
 
             Stage response = new Stage();
             VBox vbox1 = new VBox();
@@ -264,105 +259,85 @@ public class LibraryApplication extends Application {
                 ButtonBox.setPadding(new Insets(10));
                 ButtonBox.setSpacing(10);
 
-
                 playButton.setOnAction(actionEvent1 -> {
-                        assert list.getSelectionModel().getSelectedItem() != null;
-                    list.getSelectionModel().getSelectedItem();
-                        list.getSelectionModel().getSelectedItem().play();});
-
-                pauseButton.setOnAction(actionEvent1 ->
-                {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().pause();});
+                    list.getSelectionModel().getSelectedItem();
+                    list.getSelectionModel().getSelectedItem().play();});
 
-                resumeButton.setOnAction(actionEvent1 ->
-                {
+                pauseButton.setOnAction(actionEvent1 -> {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                    list.getSelectionModel().getSelectedItem().pause();});
+
+                resumeButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
                     list.getSelectionModel().getSelectedItem().resumeAudio();});
 
-                restartButton.setOnAction(actionEvent1 ->
-                {
+                restartButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
                     list.getSelectionModel().getSelectedItem().restart();});
 
-                stopButton.setOnAction(actionEvent1 ->
-                {
+                stopButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().stop();});
+                    list.getSelectionModel().getSelectedItem().stop();});
 
                 addToPlayList.setOnAction(actionEvent1 -> {
-                            Stage s = new Stage();
-                            VBox v = new VBox();
+                        Stage s = new Stage();
+                        VBox v = new VBox();
 
-                            HBox userBox = new HBox();
-                            Label userL = new Label("User: ");
-                            userL.setTextFill(Color.web("F4EEFF"));
-                            TextField userTf = new TextField();
-                            userBox.getChildren().addAll(userL , userTf);
-                            userBox.setSpacing(10);
-                            userBox.setAlignment(Pos.CENTER_LEFT);
+                        HBox userBox = new HBox();
+                        Label userL = new Label("User: ");
+                        userL.setTextFill(Color.web("F4EEFF"));
+                        TextField userTf = new TextField();
+                        userBox.getChildren().addAll(userL , userTf);
+                        userBox.setSpacing(10);
+                        userBox.setAlignment(Pos.CENTER_LEFT);
 
-                            HBox PLBox = new HBox();
-                            Label PLL = new Label("PlayList: ");
-                            PLL.setTextFill(Color.web("F4EEFF"));
-                            TextField PLTf = new TextField();
-                            PLBox.getChildren().addAll(PLL , PLTf);
-                            PLBox.setSpacing(10);
-                            PLBox.setAlignment(Pos.CENTER_RIGHT);
+                        HBox PLBox = new HBox();
+                        Label PLL = new Label("PlayList: ");
+                        PLL.setTextFill(Color.web("F4EEFF"));
+                        TextField PLTf = new TextField();
+                        PLBox.getChildren().addAll(PLL , PLTf);
+                        PLBox.setSpacing(10);
+                        PLBox.setAlignment(Pos.CENTER_RIGHT);
 
-                            HBox bBox = new HBox();
-                            Button addButton = new Button("Add");
-                            bBox.getChildren().addAll(addButton);
-                            bBox.setAlignment(Pos.CENTER);
+                        HBox bBox = new HBox();
+                        Button addButton = new Button("Add");
+                        bBox.getChildren().addAll(addButton);
+                        bBox.setAlignment(Pos.CENTER);
 
-                            v.getChildren().addAll(userBox, PLBox, bBox);
-                            v.setSpacing(10);
-                            v.setPadding(new Insets(20));
-                            VBox.setMargin(bBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
-                            VBox.setMargin(PLBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
-                            VBox.setMargin(userBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
-                            addButton.setOnAction(actionEvent4->{
-                                assert userTf.getText() != null && PLTf.getText() != null;
-                                User found = usersDB.get(userTf.getText());
-                                if ( found != null){
-                                    PlayList foundPL = null;
-                                    for (PlayList pl : found.getPlayListsList()){
-                                        if (pl.getTitle().equals(PLTf.getText())){
-                                            foundPL = pl;
-                                        }
+                        v.getChildren().addAll(userBox, PLBox, bBox);
+                        v.setSpacing(10);
+                        v.setPadding(new Insets(20));
+                        VBox.setMargin(bBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
+                        VBox.setMargin(PLBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
+                        VBox.setMargin(userBox, new Insets(10.0d, 10.0d, 10.0d, 10.0d));
+                        addButton.setOnAction(actionEvent4->{
+                            assert userTf.getText() != null && PLTf.getText() != null;
+                            User found = usersDB.get(userTf.getText());
+                            if ( found != null){
+                                PlayList foundPL = null;
+                                for (PlayList pl : found.getPlayListsList()){
+                                    if (pl.getTitle().equals(PLTf.getText())){
+                                        foundPL = pl;
                                     }
-                                    if (foundPL != null){
-                                        assert list.getSelectionModel().getSelectedItem() != null;
-                                        foundPL.addAlbum( list.getSelectionModel().getSelectedItem());
-                                        PLTf.setText("ADDED SUCCESSFULLY!");
-                                    }else{
-                                        PLTf.setText("PLAYLIST NOT FOUND!");
-                                    }
-                                }else{
-                                    userTf.setText("USER NOT FOUND!");
                                 }
-                            });
-                            // create a scene
-                            Scene scene1 = new Scene(v);
-
-                            // create a background fill
-                            BackgroundFill background_fill1 = new BackgroundFill(Color.web("27496D"),
-                                    CornerRadii.EMPTY, Insets.EMPTY);
-
-                            // create Background
-                            Background background1 = new Background(background_fill1);
-
-                            // set background
-                            v.setBackground(background1);
-
-                            // set the scene
-                            s.setScene(scene1);
-
-                            s.show();
-
+                                if (foundPL != null){
+                                    assert list.getSelectionModel().getSelectedItem() != null;
+                                    foundPL.addAlbum( list.getSelectionModel().getSelectedItem());
+                                    PLTf.setText("ADDED SUCCESSFULLY!");
+                                }else{
+                                    PLTf.setText("PLAYLIST NOT FOUND!");
+                                }
+                            }else{
+                                userTf.setText("USER NOT FOUND!");
+                            }
                         });
-
-
+                        // create a scene
+                        Scene scene1 = new Scene(v);
+                        v.setBackground(background);
+                        s.setScene(scene1);
+                        s.show();
+                    });
 
                 HBox hbx = new HBox();
                 name.setScaleX(2);
@@ -380,10 +355,8 @@ public class LibraryApplication extends Application {
                 imageBox.setPadding(new Insets(30));
                 vbox1.getChildren().addAll( hbx, imageBox ,list, ButtonBox );
 
-
-
             }else{
-                Label error = new Label("No Artists with the name '" + textfield1.getText() +"' exists in the Music Library!" );
+                Label error = new Label("No Artists with the name '" + textField1.getText() +"' exists in the Music Library!" );
                 error.setTextFill(Color.web("F4EEFF"));
                 HBox hbox = new HBox();
                 hbox.getChildren().add(error);
@@ -393,26 +366,14 @@ public class LibraryApplication extends Application {
 
             // create a scene
             Scene scene1 = new Scene(vbox1);
-
-            // create a background fill
-            BackgroundFill background_fill1 = new BackgroundFill(Color.web("27496D"),
-                    CornerRadii.EMPTY, Insets.EMPTY);
-
-            // create Background
-            Background background1 = new Background(background_fill1);
-
-            // set background
-            vbox1.setBackground(background1);
-
-            // set the scene
+            vbox1.setBackground(background);
             response.setScene(scene1);
-
             response.show();
         });
 
         //add an artist
         button4.setOnAction(actionEvent -> {
-            assert textfield4.getText() != null;
+            assert textField4.getText() != null;
 
             Stage response = new Stage();
             VBox vbox14 = new VBox();
@@ -431,26 +392,14 @@ public class LibraryApplication extends Application {
             imageCover.setSpacing(10);
             imageCover.setAlignment(Pos.CENTER);
 
-            Artist newArtist = new Artist(textfield4.getText());
+            Artist newArtist = new Artist(textField4.getText());
             MusicLibrary.addArtist(newArtist);
             vbox14.getChildren().addAll(imageCover);
 
             // create a scene
             Scene scene14 = new Scene(vbox14);
-
-            // create a background fill
-            BackgroundFill background_fill14 = new BackgroundFill(Color.web("27496D"),
-                    CornerRadii.EMPTY, Insets.EMPTY);
-
-            // create Background
-            Background background14 = new Background(background_fill14);
-
-            // set background
-            vbox14.setBackground(background14);
-
-            // set the scene
+            vbox14.setBackground(background);
             response.setScene(scene14);
-
             response.show();
 
             imageButton.setOnAction(actionEvent1 -> {
@@ -469,24 +418,20 @@ public class LibraryApplication extends Application {
                         BufferedImage bufferedImage = ImageIO.read(file);
                         Image image = SwingFXUtils.toFXImage(bufferedImage, null);
                         newArtist.changeProfilePicture(image);
-                        textfield4.setText("Added successfully!");
+                        textField4.setText("Added successfully!");
                     } catch (IOException ex) {
                         System.out.println(ex.getMessage());
-
                     }
                 }
-
                 response.close();
-
-
                     });
                 });
 
         //search an album
         button2.setOnAction(actionEvent -> {
 
-            assert textfield2.getText() != null;
-            Optional<HashSet<Album>> foundAlbum = MusicLibrary.getAlbum(textfield2.getText());
+            assert textField2.getText() != null;
+            Optional<HashSet<Album>> foundAlbum = MusicLibrary.getAlbum(textField2.getText());
 
             Stage response = new Stage();
             VBox vbox12 = new VBox();
@@ -497,7 +442,6 @@ public class LibraryApplication extends Application {
 
             if (foundAlbum.isPresent()){
 
-
                 ObservableList<Album> items =FXCollections.observableArrayList (foundAlbum.get());
                 ListView<Album> list = new ListView<>(items);
                 list.setFixedCellSize(40);
@@ -505,45 +449,61 @@ public class LibraryApplication extends Application {
                 list.setPrefWidth(100);
 
                 HBox ButtonBox = new HBox();
+                HBox ButtonBox2 = new HBox();
                 Button playButton = new Button("Play");
                 Button pauseButton = new Button("Pause");
                 Button resumeButton = new Button("Resume");
                 Button restartButton = new Button("Restart");
                 Button stopButton = new Button("Stop");
-                Button addToPlayList = new Button("Add to Playlist");
-                ButtonBox.getChildren().addAll(playButton, pauseButton, resumeButton, restartButton, stopButton, addToPlayList);
-
+                Button addToPlayListButton = new Button("Add to Playlist");
+                Button shufflePlayButton = new Button("Shuffle");
+                Button NextSongButton = new Button("Next");
+                Button PreviousSongButton = new Button("Previous");
+                ButtonBox.getChildren().addAll(playButton, pauseButton, resumeButton, restartButton, stopButton, addToPlayListButton);
+                ButtonBox2.getChildren().addAll(shufflePlayButton, NextSongButton, PreviousSongButton);
                 ButtonBox.setAlignment(Pos.CENTER);
                 ButtonBox.setPadding(new Insets(10));
+                ButtonBox2.setSpacing(10);
+                ButtonBox2.setAlignment(Pos.CENTER);
+                ButtonBox2.setPadding(new Insets(10));
                 ButtonBox.setSpacing(10);
 
 
-                playButton.setOnAction(actionEvent1 ->
-                {
+                playButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().play();});
+                    list.getSelectionModel().getSelectedItem().play();});
 
-                pauseButton.setOnAction(actionEvent1 ->
-                {
+                pauseButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().pause();});
+                    list.getSelectionModel().getSelectedItem().pause();});
 
-                resumeButton.setOnAction(actionEvent1 ->
-                {
+                resumeButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().resumeAudio();});
+                    list.getSelectionModel().getSelectedItem().resumeAudio();});
 
-                restartButton.setOnAction(actionEvent1 ->
-                {
+                restartButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().restart();});
+                    list.getSelectionModel().getSelectedItem().restart();});
 
-                stopButton.setOnAction(actionEvent1 ->
-                {
+                stopButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().stop();});
+                    list.getSelectionModel().getSelectedItem().stop();});
 
-                addToPlayList.setOnAction(actionEvent1 -> {
+                shufflePlayButton.setOnAction(actionEvent1 -> {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                    list.getSelectionModel().getSelectedItem().shufflePlay();
+                });
+                NextSongButton.setOnAction(actionEvent1 -> {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                    list.getSelectionModel().getSelectedItem().getNextSong().play();
+                });
+                PreviousSongButton.setOnAction(actionEvent1 -> {
+                    assert list.getSelectionModel().getSelectedItem() != null;
+                    list.getSelectionModel().getSelectedItem().getPreviousSong().play();
+                });
+
+
+                addToPlayListButton.setOnAction(actionEvent1 -> {
                     Stage s = new Stage();
                     VBox v = new VBox();
 
@@ -584,8 +544,7 @@ public class LibraryApplication extends Application {
                                     foundPL = pl;
                                 }
                             }
-                            if (foundPL != null)
-                            {
+                            if (foundPL != null) {
                                 assert list.getSelectionModel().getSelectedItem() != null;
                                 foundPL.addAlbum( list.getSelectionModel().getSelectedItem());
                                 PLTf.setText("ADDED SUCCESSFULLY!");
@@ -596,33 +555,17 @@ public class LibraryApplication extends Application {
                             userTf.setText("USER NOT FOUND!");
                         }
                     });
+
                     // create a scene
                     Scene scene1 = new Scene(v);
-
-                    // create a background fill
-                    BackgroundFill background_fill1 = new BackgroundFill(Color.web("27496D"),
-                            CornerRadii.EMPTY, Insets.EMPTY);
-
-                    // create Background
-                    Background background1 = new Background(background_fill1);
-
-                    // set background
-                    v.setBackground(background1);
-
-                    // set the scene
+                    v.setBackground(background);
                     s.setScene(scene1);
-
                     s.show();
-
                 });
 
-
-                vbox12.getChildren().addAll(  list , ButtonBox);
-
-
-
+                vbox12.getChildren().addAll(  list , ButtonBox, ButtonBox2);
             }else{
-                Label error = new Label("No Albums with the name '" + textfield2.getText() +"' exists in the Music Library!" );
+                Label error = new Label("No Albums with the name '" + textField2.getText() +"' exists in the Music Library!" );
                 error.setTextFill(Color.web("F4EEFF"));
                 HBox hbox = new HBox();
                 hbox.getChildren().add(error);
@@ -632,28 +575,15 @@ public class LibraryApplication extends Application {
 
             // create a scene
             Scene scene12 = new Scene(vbox12);
-
-            // create a background fill
-            BackgroundFill background_fill12 = new BackgroundFill(Color.web("27496D"),
-                    CornerRadii.EMPTY, Insets.EMPTY);
-
-            // create Background
-            Background background12 = new Background(background_fill12);
-
-            // set background
-            vbox12.setBackground(background12);
-
-            // set the scene
+            vbox12.setBackground(background);
             response.setScene(scene12);
-
             response.show();
-
         });
 
         //add an album
         button5.setOnAction(actionEvent -> {
-            assert textfield5.getText() != null;
-            String albumName = textfield5.getText();
+            assert textField5.getText() != null;
+            String albumName = textField5.getText();
 
             Stage response = new Stage();
             VBox vbox14 = new VBox();
@@ -669,7 +599,7 @@ public class LibraryApplication extends Application {
             artst.getChildren().addAll(albumArtistLabel, albumArtist);
             artst.setSpacing(10);
             artst.setPadding(new Insets(30));
-             artst.setAlignment(Pos.CENTER);
+            artst.setAlignment(Pos.CENTER);
 
             HBox year = new HBox();
             Label albumYearLabel = new Label("Year: ");
@@ -721,23 +651,16 @@ public class LibraryApplication extends Application {
             submit.setAlignment(Pos.CENTER);
 
             vbox14.getChildren().addAll(artst, year, lang, studio, imageCover, submit);
-
+            VBox.setVgrow(artst, Priority.ALWAYS);
+            VBox.setVgrow(year, Priority.ALWAYS);
+            VBox.setVgrow(lang, Priority.ALWAYS);
+            VBox.setVgrow(studio, Priority.ALWAYS);
+            VBox.setVgrow(imageCover, Priority.ALWAYS);
+            VBox.setVgrow(submit, Priority.ALWAYS);
             // create a scene
             Scene scene14 = new Scene(vbox14);
-
-            // create a background fill
-            BackgroundFill background_fill14 = new BackgroundFill(Color.web("27496D"),
-                    CornerRadii.EMPTY, Insets.EMPTY);
-
-            // create Background
-            Background background14 = new Background(background_fill14);
-
-            // set background
-            vbox14.setBackground(background14);
-
-            // set the scene
+            vbox14.setBackground(background);
             response.setScene(scene14);
-
             response.show();
 
             imageButton.setOnAction(actionEvent1 -> {
@@ -758,9 +681,7 @@ public class LibraryApplication extends Application {
                         albumCoverImage.add(image);
                     } catch (IOException ex) {
                         System.out.println(ex.getMessage());
-                    }
-            }
-
+                    } }
             });
 
             submitButton.setOnAction(actionEvent1 -> {
@@ -780,44 +701,27 @@ public class LibraryApplication extends Application {
 
                             // create a scene
                             Scene errorScene = new Scene(errorBox);
-
-                            // create a background fill
-                            BackgroundFill Error_background_fill = new BackgroundFill(Color.web("27496D"),
-                                    CornerRadii.EMPTY, Insets.EMPTY);
-
-                            // create Background
-                            Background error_background = new Background(Error_background_fill);
-
-                            // set background
-                            errorBox.setBackground(error_background);
-
-                            // set the scene
+                            errorBox.setBackground(background);
                             errorStage.setScene(errorScene);
-
-                            // set title for the stage
                             errorStage.setTitle("Error");
-
                             errorStage.show();
 
-
                         }else{
-
                         Album newAlbum = new Album( a.get() , albumName, parseInt(albumYear.getText()), albumLang.getText(), albumStudio.getText(),albumCoverImage.get(0));
                         a.get().addAlbum(newAlbum);
                         MusicLibrary.addArtist(a.get());
                         response.close();
-                        textfield5.setText("Added successfully!");
+                        textField5.setText("Added successfully!");
                         }
 
-                    });
-        }
+                    }); }
         );
 
 
         //search a song
         button3.setOnAction(actionEvent -> {
-            assert textfield3.getText() != null;
-            Optional<HashSet<Song>> foundSong = MusicLibrary.getSong(textfield3.getText());
+            assert textField3.getText() != null;
+            Optional<HashSet<Song>> foundSong = MusicLibrary.getSong(textField3.getText());
 
             Stage response = new Stage();
             VBox vbox13 = new VBox();
@@ -827,8 +731,6 @@ public class LibraryApplication extends Application {
             response.setTitle("Music Library");
 
             if (foundSong.isPresent()){
-
-
                 ObservableList<Song> items =FXCollections.observableArrayList (foundSong.get());
                 ListView<Song> list = new ListView<>(items);
                 list.setFixedCellSize(40);
@@ -849,8 +751,7 @@ public class LibraryApplication extends Application {
                 ButtonBox.setSpacing(10);
 
 
-                playButton.setOnAction(actionEvent1 ->
-                {
+                playButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
                    for (Observer o :  list.getSelectionModel().getSelectedItem().getObservers()){
                        if (o.getName().equals( "NowPlayingObserver")){
@@ -860,25 +761,21 @@ public class LibraryApplication extends Application {
                    }
                         list.getSelectionModel().getSelectedItem().play();});
 
-                pauseButton.setOnAction(actionEvent1 ->
-                {
+                pauseButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().pause();});
+                    list.getSelectionModel().getSelectedItem().pause();});
 
-                resumeButton.setOnAction(actionEvent1 ->
-                {
+                resumeButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().resumeAudio();});
+                    list.getSelectionModel().getSelectedItem().resumeAudio();});
 
-                restartButton.setOnAction(actionEvent1 ->
-                {
+                restartButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().restart();});
+                    list.getSelectionModel().getSelectedItem().restart();});
 
-                stopButton.setOnAction(actionEvent1 ->
-                {
+                stopButton.setOnAction(actionEvent1 -> {
                     assert list.getSelectionModel().getSelectedItem() != null;
-                        list.getSelectionModel().getSelectedItem().stop();});
+                    list.getSelectionModel().getSelectedItem().stop();});
 
                 addToPlayList.setOnAction(actionEvent1 -> {
                     Stage s = new Stage();
@@ -934,56 +831,31 @@ public class LibraryApplication extends Application {
                     });
                     // create a scene
                     Scene scene1 = new Scene(v);
-
-                    // create a background fill
-                    BackgroundFill background_fill1 = new BackgroundFill(Color.web("27496D"),
-                            CornerRadii.EMPTY, Insets.EMPTY);
-
-                    // create Background
-                    Background background1 = new Background(background_fill1);
-
-                    // set background
-                    v.setBackground(background1);
-
-                    // set the scene
+                    v.setBackground(background);
                     s.setScene(scene1);
-
                     s.show();
-
                 });
 
 
                 vbox13.getChildren().addAll(  list , ButtonBox);
 
             }else{
-                Label error = new Label("No Songs with the name '" + textfield3.getText() +"' exists in the Music Library!" );
+                Label error = new Label("No Songs with the name '" + textField3.getText() +"' exists in the Music Library!" );
                 error.setTextFill(Color.web("F4EEFF"));
                 vbox13.getChildren().add(error);
             }
 
             // create a scene
             Scene scene13 = new Scene(vbox13);
-
-            // create a background fill
-            BackgroundFill background_fill13 = new BackgroundFill(Color.web("27496D"),
-                    CornerRadii.EMPTY, Insets.EMPTY);
-
-            // create Background
-            Background background13 = new Background(background_fill13);
-
-            // set background
-            vbox13.setBackground(background13);
-
-            // set the scene
+            vbox13.setBackground(background);
             response.setScene(scene13);
-
             response.show();
         });
 
         //add a song
         button6.setOnAction(actionEvent -> {
-            assert textfield6.getText() != null;
-            String songName = textfield6.getText();
+            assert textField6.getText() != null;
+            String songName = textField6.getText();
 
             Stage response = new Stage();
             VBox vbox14 = new VBox();
@@ -1073,23 +945,20 @@ public class LibraryApplication extends Application {
             submit.setAlignment(Pos.CENTER);
 
             vbox14.getChildren().addAll( path, artst, albm, year, lang, studio, length, feat, submit);
+            VBox.setVgrow(artst, Priority.ALWAYS);
+            VBox.setVgrow(year, Priority.ALWAYS);
+            VBox.setVgrow(lang, Priority.ALWAYS);
+            VBox.setVgrow(studio, Priority.ALWAYS);
+            VBox.setVgrow(path, Priority.ALWAYS);
+            VBox.setVgrow(submit, Priority.ALWAYS);
+            VBox.setVgrow(albm, Priority.ALWAYS);
+            VBox.setVgrow(length, Priority.ALWAYS);
+            VBox.setVgrow(feat, Priority.ALWAYS);
 
             // create a scene
             Scene scene14 = new Scene(vbox14);
-
-            // create a background fill
-            BackgroundFill background_fill14 = new BackgroundFill(Color.web("27496D"),
-                    CornerRadii.EMPTY, Insets.EMPTY);
-
-            // create Background
-            Background background14 = new Background(background_fill14);
-
-            // set background
-            vbox14.setBackground(background14);
-
-            // set the scene
+            vbox14.setBackground(background);
             response.setScene(scene14);
-
             response.show();
 
             submitButton.setOnAction(actionEvent1 -> {
@@ -1117,26 +986,10 @@ public class LibraryApplication extends Application {
 
                     // create a scene
                     Scene errorScene = new Scene(errorBox);
-
-                    // create a background fill
-                    BackgroundFill Error_background_fill = new BackgroundFill(Color.web("27496D"),
-                            CornerRadii.EMPTY, Insets.EMPTY);
-
-                    // create Background
-                    Background error_background = new Background(Error_background_fill);
-
-                    // set background
-                    errorBox.setBackground(error_background);
-
-                    // set the scene
+                    errorBox.setBackground(background);
                     errorStage.setScene(errorScene);
-
-                    // set title for the stage
                     errorStage.setTitle("Error");
-
                     errorStage.show();
-
-
                 }else{
 
                     Album songsAlbum = null;
@@ -1155,6 +1008,7 @@ public class LibraryApplication extends Application {
                     Song newSong = new Song( new File(songPath.getText()), a.get() , songsAlbum ,songName, parseInt(songYear.getText()), songLang.getText(), songStudio.getText(), parseLong(songLength.getText()));
                     songsAlbum.addSong(newSong);
                     a.get().addSong(newSong);
+                    a.get().addAlbum(songsAlbum);
 
                     if (!songCollabs.getText().isEmpty()) {
                         String[] collabsList = songCollabs.getText().split(",", -1);
@@ -1164,11 +1018,8 @@ public class LibraryApplication extends Application {
                     }
                     MusicLibrary.addArtist(a.get());
                     response.close();
-                    textfield6.setText("Added successfully!");
-
+                    textField6.setText("Added successfully!");
                 }
-
-
             });
         });
 
@@ -1183,9 +1034,7 @@ public class LibraryApplication extends Application {
                 usersDB.put(textField7.getText(), newUser);
                 textField7.setText("Created Successfully!");
             }
-
         });
-
 
 
         //access a user account
@@ -1241,22 +1090,9 @@ public class LibraryApplication extends Application {
                     });
                    // create a scene
                    Scene scene14 = new Scene(vb);
-
-                   // create a background fill
-                   BackgroundFill background_fill14 = new BackgroundFill(Color.web("27496D"),
-                           CornerRadii.EMPTY, Insets.EMPTY);
-
-                   // create Background
-                   Background background14 = new Background(background_fill14);
-
-                   // set background
-                   vb.setBackground(background14);
-
-                   // set the scene
+                   vb.setBackground(background);
                    newPLayList.setScene(scene14);
-
                    newPLayList.show();
-
                });
 
                getAllPlaylistsButton.setOnAction(actionEvent1 -> {
@@ -1279,44 +1115,57 @@ public class LibraryApplication extends Application {
                    list.setPrefWidth(100);
 
                    HBox ButtonBox = new HBox();
+                   HBox ButtonBox2 = new HBox();
                    Button playButton = new Button("Play");
                    Button pauseButton = new Button("Pause");
                    Button resumeButton = new Button("Resume");
                    Button restartButton = new Button("Restart");
                    Button stopButton = new Button("Stop");
+                   Button shufflePlayButton = new Button("Shuffle");
+                   Button NextSongButton = new Button("Next");
+                   Button PreviousSongButton = new Button("Previous");
                    Button getInfoButton = new Button("Get Info");
                    ButtonBox.getChildren().addAll(playButton, pauseButton, resumeButton, restartButton, stopButton, getInfoButton);
-
+                   ButtonBox2.getChildren().addAll(shufflePlayButton, NextSongButton, PreviousSongButton);
                    ButtonBox.setAlignment(Pos.CENTER);
                    ButtonBox.setPadding(new Insets(10));
                    ButtonBox.setSpacing(10);
+                   ButtonBox2.setAlignment(Pos.CENTER);
+                   ButtonBox2.setPadding(new Insets(10));
+                   ButtonBox2.setSpacing(10);
 
-
-                   playButton.setOnAction(actionEvent3 ->
-                   {
+                   playButton.setOnAction(actionEvent3 -> {
                        assert list.getSelectionModel().getSelectedItem() != null;
                        list.getSelectionModel().getSelectedItem().play();});
 
-                   pauseButton.setOnAction(actionEvent3 ->
-                   {
+                   pauseButton.setOnAction(actionEvent3 -> {
                        assert list.getSelectionModel().getSelectedItem() != null;
-                           list.getSelectionModel().getSelectedItem().pause();});
+                       list.getSelectionModel().getSelectedItem().pause();});
 
-                   resumeButton.setOnAction(actionEvent3 ->
-                   {
+                   resumeButton.setOnAction(actionEvent3 -> {
                        assert list.getSelectionModel().getSelectedItem() != null;
-                           list.getSelectionModel().getSelectedItem().resumeAudio();});
+                       list.getSelectionModel().getSelectedItem().resumeAudio();});
 
-                   restartButton.setOnAction(actionEvent3 ->
-                   {
+                   restartButton.setOnAction(actionEvent3 -> {
                        assert list.getSelectionModel().getSelectedItem() != null;
                        list.getSelectionModel().getSelectedItem().restart();});
 
-                   stopButton.setOnAction(actionEvent3 ->
-                   {
+                   stopButton.setOnAction(actionEvent3 -> {
                        assert list.getSelectionModel().getSelectedItem() != null;
-                           list.getSelectionModel().getSelectedItem().stop();});
+                       list.getSelectionModel().getSelectedItem().stop();});
 
+                   shufflePlayButton.setOnAction(actionEvent3 -> {
+                       assert list.getSelectionModel().getSelectedItem() != null;
+                       list.getSelectionModel().getSelectedItem().shufflePlay();
+                   });
+                   NextSongButton.setOnAction(actionEvent3 -> {
+                       assert list.getSelectionModel().getSelectedItem() != null;
+                       list.getSelectionModel().getSelectedItem().getNextSong().play();
+                   });
+                   PreviousSongButton.setOnAction(actionEvent3 -> {
+                       assert list.getSelectionModel().getSelectedItem() != null;
+                       list.getSelectionModel().getSelectedItem().getPreviousSong().play();
+                   });
                    getInfoButton.setOnAction(actionEvent3 ->{
                        Stage infoStage = new Stage();
                        infoStage.setTitle(list.getSelectionModel().getSelectedItem().getTitle());
@@ -1330,22 +1179,15 @@ public class LibraryApplication extends Application {
                        TableColumn firstCol = new TableColumn(" Total Artists ");
                        TableColumn lastCol = new TableColumn(" Total length ");
 
-
                        TotalArtistsVisitor artistsVisitor = new TotalArtistsVisitor();
                        TotalLengthVisitor lengthVisitor = new TotalLengthVisitor();
                        assert list.getSelectionModel().getSelectedItem() != null;
                        list.getSelectionModel().getSelectedItem().acceptVisitor(artistsVisitor);
                        list.getSelectionModel().getSelectedItem().acceptVisitor(lengthVisitor);
 
-
-
                        final ObservableList<DataOBJ> data = FXCollections.observableArrayList(new DataOBJ(String.valueOf(lengthVisitor.getTotalLength()), artistsVisitor.getTotalArtists().toString()));
-                       lastCol.setCellValueFactory(
-                               new PropertyValueFactory<DataOBJ,String>("length")
-                       );
-                       firstCol.setCellValueFactory(
-                               new PropertyValueFactory<DataOBJ,String>("artists")
-                       );
+                       lastCol.setCellValueFactory(new PropertyValueFactory<DataOBJ,String>("length"));
+                       firstCol.setCellValueFactory(new PropertyValueFactory<DataOBJ,String>("artists"));
 
                        table.setItems(data);
                        table.getColumns().addAll(firstCol, lastCol);
@@ -1357,65 +1199,26 @@ public class LibraryApplication extends Application {
 
                        // create a scene
                        Scene scene13 = new Scene(vb);
-
-                       // create a background fill
-                       BackgroundFill background_fill13 = new BackgroundFill(Color.web("27496D"),
-                               CornerRadii.EMPTY, Insets.EMPTY);
-
-                       // create Background
-                       Background background13 = new Background(background_fill13);
-
-                       // set background
-                       vb.setBackground(background13);
-
-                       // set the scene
+                       vb.setBackground(background);
                        infoStage.setScene(scene13);
-
                        infoStage.show();
                    });
 
-
                    vbox13.getChildren().addAll(  list , ButtonBox);
-
 
                    // create a scene
                    Scene scene13 = new Scene(vbox13);
-
-                   // create a background fill
-                   BackgroundFill background_fill13 = new BackgroundFill(Color.web("27496D"),
-                           CornerRadii.EMPTY, Insets.EMPTY);
-
-                   // create Background
-                   Background background13 = new Background(background_fill13);
-
-                   // set background
-                   vbox13.setBackground(background13);
-
-                   // set the scene
+                   vbox13.setBackground(background);
                    response.setScene(scene13);
-
                    response.show();
                });
 
                 // create a scene
                 Scene User_scene = new Scene(user_vbox);
-
-                // create a background fill
-                BackgroundFill background_fill14 = new BackgroundFill(Color.web("27496D"),
-                        CornerRadii.EMPTY, Insets.EMPTY);
-
-                // create Background
-                Background background14 = new Background(background_fill14);
-
-                // set background
-                user_vbox.setBackground(background14);
-
-                // set the scene
+                user_vbox.setBackground(background);
                 userStage.setScene(User_scene);
-
                 userStage.show();
             }
         });
-
     }
 }

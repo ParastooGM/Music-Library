@@ -126,8 +126,23 @@ public abstract class SongList implements Listenable, ToBeVisited {
     public void play() {
         for (Song s : aSongs){
             s.play();
-            currentSongNum++;
 
+            if (s.getAudioFormat() == AUDIO_FORMAT.MP3){
+                while (true){
+                    if (s.getMediaPlayer().getCurrentTime() == s.getMediaPlayer().getStopTime()){
+                        s.stop();
+                        break;
+                    }
+                }
+            }else{
+                while (true){
+                    if(s.getClip().getFramePosition() == s.getClip().getFrameLength()){
+                        s.stop();
+                        break;
+                    }
+                }
+            }
+            currentSongNum++;
         }
     }
 
@@ -155,6 +170,23 @@ public abstract class SongList implements Listenable, ToBeVisited {
         aSongs.get(currentSongNum).resumeAudio();
         for (int i = currentSongNum++; i< numSongs; i++ ){
             aSongs.get(i).play();
+            if (aSongs.get(i).getAudioFormat() == AUDIO_FORMAT.MP3){
+                while (aSongs.get(i).getMediaPlayer().getCurrentTime() != aSongs.get(i).getMediaPlayer().getStopTime()){
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }else{
+                while (aSongs.get(i).getClip().getFramePosition() != aSongs.get(i).getClip().getFrameLength()){
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
             currentSongNum++;
         }
     }
@@ -171,17 +203,17 @@ public abstract class SongList implements Listenable, ToBeVisited {
         v.VisitSongList(this);
     }
 
-    //other overridden methods
+    //Other overridden methods.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SongList songList = (SongList) o;
-        return aTitle.equals(songList.aTitle) && aSongs.equals(songList.aSongs);
+        return aTitle.equals(songList.aTitle);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(aTitle, aSongs);
+        return Objects.hash(aTitle);
     }
 }

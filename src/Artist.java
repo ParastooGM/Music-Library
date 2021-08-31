@@ -1,6 +1,5 @@
 import javafx.scene.image.Image;
 import java.util.*;
-import java.util.List;
 
 /**
  * An Artist Object has Songs and Albums.
@@ -8,9 +7,9 @@ import java.util.List;
 public class Artist {
 
     final private String aName;
-    final private List<Song> aSongs = new ArrayList<>();
-    final private List<Album> aDiscography = new ArrayList<>();
-    private Optional<javafx.scene.image.Image> aProfilePicture = Optional.empty();
+    final private Set<Song> aSongs = new HashSet<>();
+    final private Set<Album> aDiscography = new HashSet<>();
+    private Optional<Image> aProfilePicture = Optional.empty();
 
     /**
      * constructor of the Artist class.
@@ -58,14 +57,14 @@ public class Artist {
      * @return a list iterator on all the available albums of the artist in the music library.
      */
     public Iterator<Album> getAlbums() {
-        return Collections.unmodifiableList(aDiscography).listIterator();
+        return Collections.unmodifiableSet(aDiscography).iterator();
     }
 
     /**
      * @return a list of the available albums of the artist in the music library.
      */
-    public List<Album> getAlbumsList() {
-        return Collections.unmodifiableList(aDiscography);
+    public Set<Album> getAlbumsList() {
+        return Collections.unmodifiableSet(aDiscography);
     }
 
 
@@ -73,7 +72,7 @@ public class Artist {
      * @return a list iterator on all the available songs of the artist in the music library.
      */
     public Iterator<Song> getSongs() {
-        return Collections.unmodifiableList(aSongs).listIterator();
+        return Collections.unmodifiableSet(aSongs).iterator();
     }
 
     //Other class methods
